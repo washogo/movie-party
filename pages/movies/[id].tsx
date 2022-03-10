@@ -4,8 +4,14 @@ import { BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
+import { API_KEY } from "../api/apiConfig";
 
-const Movie = () => {
+type Props = {
+  id: number;
+};
+
+const Movie = (props: Props) => {
+  const fetchUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`;
   return (
     <>
       <Header />

@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
+import axios from "./api/axios";
 import Image from "next/image";
-import { FaSearch, FaHamburger } from "react-icons/fa";
+import { FaHamburger } from "react-icons/fa";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -9,79 +10,182 @@ import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
 import { Header } from "../components/molecules/Header";
 import { Footer } from "../components/molecules/Footer";
+import { useEffect, useState } from "react";
+import { requests } from "./api/apiConfig";
+
+type Movie = {
+  id: number;
+  title: string;
+  poster_path: any;
+  popularity: number;
+  vote_count: number;
+};
 
 const Home: NextPage = () => {
+  const [movies, setMovies] = useState<Array<Movie>>([]);
+
+  useEffect(() => {
+    const getMovies = async () => {
+      await axios
+        .get(requests.fetchPopular)
+        .then((result) => {
+          setMovies(result.data.results);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getMovies();
+  }, []);
+
+  console.log(movies);
+
   return (
     <>
-      <Header/>
-      <div className="bg-Secondary shadow border border-Black w-full">
-        <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10  rounded-lg" />
-        <div className="flex space-x-11 items-center bg-Black mt-10 mx-auto rounded-xl w-5/6">
-          <IoIosArrowDropleftCircle className="w-16 h-16 rounded-lg" />
-          <div>
-            <Image
-              width="190px"
-              height="220px"
-              src="/movie_sample2.jpeg"
-              alt="movie_sample2"
-            />
+      <Header />
+      {movies.length !== 0 && (
+        <div className="bg-Secondary shadow border border-Black w-full">
+          <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10  rounded-lg" />
+          <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl w-5/6">
+            <IoIosArrowDropleftCircle className="w-16 h-16 rounded-lg" />
+            <div className="w-full flex space-x-11 items-center overflow-x-scroll scroll-smooth">
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[0].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[1].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[2].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[3].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[4].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[5].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[6].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[7].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[8].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[9].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+              <div>
+                <Image
+                  width="190px"
+                  height="220px"
+                  src={`https://image.tmdb.org/t/p/w500/${movies[10].poster_path}`}
+                  alt="movie_sample"
+                  layout="fixed"
+                />
+              </div>
+            </div>
+            <IoIosArrowDroprightCircle className="w-16 h-16 rounded-lg" />
           </div>
-          <div>
-            <Image
-              width="190px"
-              height="220px"
-              src="/movie_sample3.jpeg"
-              alt="movie_sample3"
-            />
+          <div className="flex flex-wrap justify-center">
+            {movies.map((movie) => (
+              <div className="items-center w-1/5 mt-10 mr-2" key={movie.id}>
+                <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
+                  <p className="hover:overflow-y-scroll h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black">
+                    {movie.title}
+                  </p>
+                </div>
+                <div>
+                  <Image
+                    width="318.56px"
+                    height="469px"
+                    layout="responsive"
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt="movie sample1"
+                  />
+                </div>
+                <div className="w-full grid grid-cols-6 gap-2 content-center">
+                  <AiFillEye className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
+                  <p className="overflow-x-auto w-full text-xs xl:text-xl lg:text-lg md:text-md sm:text-sm font-bold text-center text-White">
+                    {movie.vote_count}
+                  </p>
+                  <BsStars className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
+                  <p className="overflow-x-auto w-full text-xs xl:text-xl lg:text-lg md:text-md sm:text-sm font-bold text-center text-White">
+                    {Math.floor(movie.popularity / 1000)}K
+                  </p>
+                  <AiOutlineEye className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
+                  <AiOutlineStar className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
+                </div>
+              </div>
+            ))}
           </div>
-          <div>
-            <Image
-              width="190px"
-              height="220px"
-              src="/movie_sample4.jpeg"
-              alt="movie_sample4"
-            />
-          </div>
-          <div>
-            <Image
-              width="190px"
-              height="220px"
-              src="/movie_sample2.jpeg"
-              alt="movie_sample2"
-            />
-          </div>
-          <IoIosArrowDroprightCircle className="w-16 h-16 rounded-lg" />
         </div>
-        <div className="items-center w-1/5 mt-10 mx-auto">
-          <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
-            <p className="h-full text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black">
-              MARVEL SPIDER-MAN~No Way Home~
-            </p>
-          </div>
-          <div>
-            <Image
-              width="318.56px"
-              height="469px"
-              layout="responsive"
-              src="/movie_sample.jpeg"
-              alt="movie sample1"
-            />
-          </div>
-          <div className="w-full grid grid-cols-6 gap-2 content-center">
-            <AiFillEye className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
-            <p className="w-full text-xs xl:text-xl lg:text-lg md:text-md sm:text-sm font-bold text-center text-White">
-              13k
-            </p>
-            <BsStars className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
-            <p className="w-full text-xs xl:text-xl lg:text-lg md:text-md sm:text-sm font-bold text-center text-White">
-              13k
-            </p>
-            <AiOutlineEye className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
-            <AiOutlineStar className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
-          </div>
-        </div>
-      </div>
-      <Footer/>
+      )}
+      <Footer />
     </>
   );
 };
