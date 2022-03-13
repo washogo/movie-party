@@ -12,6 +12,7 @@ import { Header } from "../components/molecules/Header";
 import { Footer } from "../components/molecules/Footer";
 import { useEffect, useState } from "react";
 import { requests } from "./api/apiConfig";
+import { useRouter } from "next/router";
 
 type Movie = {
   id: number;
@@ -23,6 +24,7 @@ type Movie = {
 
 const Home: NextPage = () => {
   const [movies, setMovies] = useState<Array<Movie>>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const getMovies = async () => {
@@ -38,17 +40,32 @@ const Home: NextPage = () => {
     getMovies();
   }, []);
 
-  console.log(movies);
+  console.log(movies)
 
   return (
     <>
+      {/* <style>
+        {`@keyframes toLeft {
+        0% {
+          transform: translateX(50);
+        }
+        100% {
+          transform: translateX(calc(-220px * 10));
+        }
+      }`}
+      </style> */}
       <Header />
       {movies.length !== 0 && (
         <div className="bg-Secondary shadow border border-Black w-full">
           <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10  rounded-lg" />
           <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl w-5/6">
             <IoIosArrowDropleftCircle className="w-16 h-16 rounded-lg" />
-            <div className="w-full flex space-x-11 items-center overflow-x-scroll scroll-smooth">
+            <div
+              className="w-full flex space-x-11 items-center overflow-x-auto scroll-smooth"
+              // style={{
+              //   animation: `toLeft 10s linear infinite`,
+              // }}
+            >
               <div>
                 <Image
                   width="190px"
@@ -152,10 +169,20 @@ const Home: NextPage = () => {
             <IoIosArrowDroprightCircle className="w-16 h-16 rounded-lg" />
           </div>
           <div className="flex flex-wrap justify-center">
-            {movies.map((movie) => (
+            {movies.map((movie, index) => (
               <div className="items-center w-1/5 mt-10 mr-2" key={movie.id}>
                 <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
-                  <p className="hover:overflow-y-scroll h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black">
+                  <p
+                    className="hover:overflow-y-scroll h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black"
+                    onClick={() => {
+                      router.push({
+                        pathname: `/movies/${movie.id}`,
+                        query: {
+                          id: movie.id,
+                        },
+                      });
+                    }}
+                  >
                     {movie.title}
                   </p>
                 </div>
