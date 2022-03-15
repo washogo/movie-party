@@ -5,36 +5,17 @@ import { useEffect, useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
+import { useRecoilState } from "recoil";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
+import { movieState } from "../../src/recoil/movieState";
+import { Cast, Genre, Movie } from "../../src/types/useMovie";
 import { API_KEY } from "../api/apiConfig";
-
-type Movie = {
-  id: any;
-  title: any;
-  popularity: any;
-  vote_count: any;
-  poster_path: any;
-  production_countries: any;
-  release_date: string;
-  runtime: number | null;
-  overview: string | null;
-  genres: Array<Genre>;
-};
-type Genre = {
-  id: number;
-  name: string;
-};
-
-type Cast = {
-  id: number;
-  name: string;
-};
 
 const Movie = () => {
   const router = useRouter();
   const id = router.query.id;
-  const [movie, setMovie] = useState<Movie | null>(null);
+  const [movie, setMovie] = useRecoilState<Movie | null>(movieState);
   const [director, setDirector] = useState("");
   const [casts, setCasts] = useState<Array<Cast>>([]);
 
@@ -52,7 +33,7 @@ const Movie = () => {
         });
     };
     getDetail();
-  }, [id]);
+  }, [id, setMovie]);
 
   useEffect(() => {
     const getCredit = async () => {
@@ -82,7 +63,7 @@ const Movie = () => {
       {movie && director && casts && (
         <>
           <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
-          <div className="grid grid-cols-12">
+          <div className="grid grid-cols-12 mb-10">
             <div className="col-start-2 col-span-10">
               <p className="text-4xl font-bold text-center text-White border-b-4 border-Black mb-3">
                 {movie.title}
@@ -175,7 +156,12 @@ const Movie = () => {
                     </div>
                   </div>
                   <div className="flex justify-end">
-                    <button className="bg-Primary rounded-full hover:bg-Black px-6 mr-5">
+                    <button
+                      className="bg-Primary rounded-full hover:bg-Black px-6 mr-5"
+                      onClick={() => {
+                        router.push("/reviews/create");
+                      }}
+                    >
                       レビュー
                     </button>
                     <button className="bg-Secondary rounded-full hover:bg-Black px-6">
