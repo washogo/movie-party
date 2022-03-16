@@ -1,16 +1,10 @@
 import { addDoc, collection } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { MouseEvent, useEffect, useState } from "react";
-import { IconContext } from "react-icons";
-import {
-  AiFillEye,
-  AiFillStar,
-  AiOutlineEye,
-  AiOutlineStar,
-} from "react-icons/ai";
+import { useState } from "react";
+import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsFillStarFill, BsStars } from "react-icons/bs";
-import { FaHamburger, FaRegStar } from "react-icons/fa";
+import { FaHamburger } from "react-icons/fa";
 import { useRecoilValue } from "recoil";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
@@ -40,14 +34,10 @@ const Create = () => {
     const id = Number(e.target.id);
     const arr = [...Array(id)].map((_, i) => i);
     setStarIds(arr);
-    // console.log("hover")
-    console.log(e.target.id);
-    console.log(arr);
   };
 
   const onHoverOut = (e: any) => {
     setStarIds([]);
-    console.log("out");
   };
 
   const onClickStar = (num: number) => {
