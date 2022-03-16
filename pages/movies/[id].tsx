@@ -137,7 +137,7 @@ const Movie = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row-span-2">
+                  <div className="row-span-1">
                     <p className="font-bold">出演者</p>
                     <div className="grid grid-cols-4 gap-y-2 gap-x-3">
                       {casts.map((cast, index) => {
@@ -155,21 +155,21 @@ const Movie = () => {
                       })}
                     </div>
                   </div>
-                  <div className="flex justify-end">
-                    <button
-                      className="bg-Primary rounded-full hover:bg-Black px-6 mr-5"
-                      onClick={() => {
-                        router.push("/reviews/create");
-                      }}
-                    >
-                      レビュー
-                    </button>
-                    <button className="bg-Secondary rounded-full hover:bg-Black px-6">
-                      一覧画面
-                    </button>
-                  </div>
                 </div>
               </div>
+            </div>
+            <div className="flex justify-end col-start-5 col-span-7 mt-5">
+              <button
+                className="bg-Primary rounded-full hover:bg-Black px-6 mr-5"
+                onClick={() => {
+                  router.push("/reviews/create");
+                }}
+              >
+                レビュー
+              </button>
+              <button className="bg-Secondary rounded-full hover:bg-Black px-6">
+                一覧画面
+              </button>
             </div>
           </div>
         </>

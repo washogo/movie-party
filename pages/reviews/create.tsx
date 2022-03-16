@@ -1,3 +1,4 @@
+import { addDoc, collection } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import { FaHamburger } from "react-icons/fa";
 import { useRecoilValue } from "recoil";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
+import { db } from "../../firebase/firebase";
 import { movieState } from "../../src/recoil/movieState";
 
 const Create = () => {
@@ -15,8 +17,13 @@ const Create = () => {
   const movie = useRecoilValue(movieState);
   const router = useRouter();
 
-  const onClickCreate = () => {
-    
+  const onClickCreate = async () => {
+    await addDoc(collection(db, "reviews"), {
+      evaluation,
+      review,
+    });
+    setEvaluation("");
+    setReview("");
   };
 
   return (
@@ -99,10 +106,12 @@ const Create = () => {
                   </button>
                   <button
                     className="h-1/2 bg-Secondary rounded-full hover:bg-Black px-6"
-                    onClick={() => router.push({ 
-                      pathname: `/movies/${movie.id}`,
-                      query: { id: movie.id },
-                    })}
+                    onClick={() =>
+                      router.push({
+                        pathname: `/movies/${movie.id}`,
+                        query: { id: movie.id },
+                      })
+                    }
                   >
                     Back
                   </button>
