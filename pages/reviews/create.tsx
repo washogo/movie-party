@@ -1,10 +1,16 @@
 import { addDoc, collection } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
-import { BsStars } from "react-icons/bs";
-import { FaHamburger } from "react-icons/fa";
+import { MouseEvent, useEffect, useState } from "react";
+import { IconContext } from "react-icons";
+import {
+  AiFillEye,
+  AiFillStar,
+  AiOutlineEye,
+  AiOutlineStar,
+} from "react-icons/ai";
+import { BsFillStarFill, BsStars } from "react-icons/bs";
+import { FaHamburger, FaRegStar } from "react-icons/fa";
 import { useRecoilValue } from "recoil";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
@@ -12,18 +18,46 @@ import { db } from "../../firebase/firebase";
 import { movieState } from "../../src/recoil/movieState";
 
 const Create = () => {
-  const [evaluation, setEvaluation] = useState("");
+  const [evaluation, setEvaluation] = useState(0);
   const [review, setReview] = useState("");
   const movie = useRecoilValue(movieState);
   const router = useRouter();
+  const [starIds, setStarIds] = useState<Array<number>>([]);
+  const [isSelected, setIsSelected] = useState(0);
 
   const onClickCreate = async () => {
     await addDoc(collection(db, "reviews"), {
       evaluation,
       review,
     });
-    setEvaluation("");
+    setStarIds([]);
+    setIsSelected(0);
+    setEvaluation(0);
     setReview("");
+  };
+
+  const onHoverStar = (e: any) => {
+    const id = Number(e.target.id);
+    const arr = [...Array(id)].map((_, i) => i);
+    setStarIds(arr);
+    // console.log("hover")
+    console.log(e.target.id);
+    console.log(arr);
+  };
+
+  const onHoverOut = (e: any) => {
+    setStarIds([]);
+    console.log("out");
+  };
+
+  const onClickStar = (num: number) => {
+    if (isSelected === 0) {
+      setIsSelected(num);
+      setEvaluation(num);
+    } else {
+      setIsSelected(0);
+      setEvaluation(0);
+    }
   };
 
   return (
@@ -63,21 +97,33 @@ const Create = () => {
               </div>
               <div className="col-span-2 lg:grid grid-rows-10 gap-3">
                 <div className="row-span-1">
-                  <label
-                    htmlFor="evaluation"
-                    className="text-lg lg:text-2xl font-bold"
-                  >
+                  <label className="text-lg lg:text-2xl font-bold">
                     Evaluation
                   </label>
                   <br />
-                  <div className="w-full h-full">
-                    <input
-                      id="evaluation"
-                      type="text"
-                      className="w-1/3 lg:h-1/3 my-3 ml-5 lg:ml-20 rounded-lg"
-                      onChange={(e) => setEvaluation(e.target.value)}
-                      value={evaluation}
-                    />
+                  <div className="w-1/2 h-1/2 flex mx-auto">
+                    {[...Array(5)]
+                      .map((_, i) => i + 1)
+                      .map((num) =>
+                        starIds.length >= num || isSelected >= num ? (
+                          <BsFillStarFill
+                            key={num}
+                            size="50"
+                            className="text-Warning mr-5"
+                            onMouseLeave={onHoverOut}
+                            onClick={() => onClickStar(num)}
+                            cursor="pointer"
+                          />
+                        ) : (
+                          <BsFillStarFill
+                            key={num}
+                            id={String(num)}
+                            size="50"
+                            className="text-White hover:text-Warning mr-5"
+                            onMouseEnter={onHoverStar}
+                          />
+                        )
+                      )}
                   </div>
                 </div>
                 <div className="row-span-6">
@@ -91,7 +137,7 @@ const Create = () => {
                   <div className="w-full h-full">
                     <textarea
                       id="review"
-                      className="w-5/6 h-5/6 my-3 ml-5 lg:ml-20 rounded-lg"
+                      className="w-full h-80 lg:w-5/6 lg:h-5/6 my-3 ml-5 lg:ml-20 rounded-lg text-xl xl:text-3xl"
                       onChange={(e) => setReview(e.target.value)}
                       value={review}
                     />

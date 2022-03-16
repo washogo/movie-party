@@ -94,43 +94,44 @@ const Movie = () => {
                 </div>
 
                 <div className="col-span-2 grid grid-rows-10 gap-3 bg-White">
-                  <div className="row-span-1">
-                    <div className="flex pl-1 pr-9 pt-2 pb-1.5">
-                      <p className="text-sm font-bold pr-1">
-                        ジャンル：
-                        {movie.genres.map((genre: Genre) => genre.name + " ")}
+                  <div className="row-span-1 mt-3">
+                    <div className="flex pl-1 pr-9 pt-2 pb-1.5 items-center">
+                      <p className="text-lg font-bold">ジャンル：</p>
+                      <p className="text-md font-bold">
+                        {movie.genres.map((genre: Genre) => genre.name + "/")}
                       </p>
                     </div>
-                    <div className="w-full h-20 xl:h-3 xl:grid grid-cols-10">
-                      <div className="align-middle col-span-4">
-                        <p className="h-full text-sm font-bold">
-                          制作国：{movie.production_countries[0].name}
+                    <div className="w-full h-20 xl:h-3 xl:grid grid-cols-10 pl-1 mt-3">
+                      <div className="align-middle col-span-4 flex items-center">
+                        <p className="text-lg font-bold">制作国：</p>
+                        <p className="text-md font-bold">
+                          {movie.production_countries[0].name}
                         </p>
                       </div>
-                      <div className="align-middle col-span-3">
-                        <p className="h-full text-sm font-bold">
-                          リリース：{movie.release_date}
+                      <div className="align-middle col-span-3 flex items-center">
+                        <p className="text-lg font-bold">リリース：</p>
+                        <p className="text-md font-bold">
+                          {movie.release_date}
                         </p>
                       </div>
-                      <div className="align-middle col-span-3">
-                        <p className="h-full text-sm font-bold ">
-                          上映時間：{movie.runtime}分
-                        </p>
+                      <div className="align-middle col-span-3 flex items-center">
+                        <p className="text-lg font-bold ">上映時間：</p>
+                        <p className="text-md font-bold ">{movie.runtime}分</p>
                       </div>
                     </div>
                   </div>
                   <div className="row-span-4">
                     <div className="pl-1 pr-9 pb-1.5">
-                      <p className="text-sm font-bold">あらすじ</p>
+                      <p className="text-xl font-bold">あらすじ</p>
                     </div>
-                    <div className="">
+                    <div className="text-lg">
                       <span>{movie.overview}</span>
                     </div>
                   </div>
                   <div className="row-span-1">
                     <div className="grid grid-cols-3 ">
                       <div className="grid grid-rows-2 col-span-1">
-                        <p className="font-bold">監督</p>
+                        <p className="font-bold text-lg">監督</p>
                         <p className="bg-WhiteGray w-2/3 text-center rounded-lg">
                           {director}
                         </p>
@@ -138,7 +139,7 @@ const Movie = () => {
                     </div>
                   </div>
                   <div className="row-span-1">
-                    <p className="font-bold">出演者</p>
+                    <p className="font-bold text-lg">出演者</p>
                     <div className="grid grid-cols-4 gap-y-2 gap-x-3">
                       {casts.map((cast, index) => {
                         if (index > 7) {
