@@ -54,12 +54,12 @@ const Signup = () => {
   const onClickGoogleSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     signInWithRedirect(auth, GoogleProvider);
-    router.push("/loading");
+    router.push("/loading/loading3");
   };
 
   return (
-    <div className="flex flex-col items-center justify-end py-52 bg-Black shadow border border-Black">
-      <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 pt-0.5 pb-8 bg-Gray">
+    <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black">
+      <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 my-10 pb-8 bg-Gray">
         <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">
           Sign up
         </p>

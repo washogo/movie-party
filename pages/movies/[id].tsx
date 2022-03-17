@@ -124,9 +124,15 @@ const Movie = () => {
                     <div className="pl-1 pr-9 pb-1.5">
                       <p className="text-xl font-bold">あらすじ</p>
                     </div>
-                    <div className="text-lg">
-                      <span>{movie.overview}</span>
-                    </div>
+                    {movie.overview ? (
+                      <div className="text-lg">
+                        <span>{movie.overview}</span>
+                      </div>
+                    ) : (
+                      <div className="text-3xl">
+                        <span>自分で確かめてみよう！！</span>
+                      </div>
+                    )}
                   </div>
                   <div className="row-span-1">
                     <div className="grid grid-cols-3 ">

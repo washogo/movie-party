@@ -1,4 +1,7 @@
-import Lottie from "react-lottie"
+import { getAuth, getRedirectResult } from "firebase/auth";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import Lottie from "react-lottie";
 import animationData from "../../src/json/81986-movie.json";
 
 const Loading1 = () => {
@@ -7,8 +10,8 @@ const Loading1 = () => {
     autoplay: true,
     animationData,
     rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice"
-    }
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   return (
@@ -16,6 +19,6 @@ const Loading1 = () => {
       <Lottie options={defaultOptions} height="100vh" width="100vh" />
     </div>
   );
-}
+};
 
-export default Loading1
+export default Loading1;
