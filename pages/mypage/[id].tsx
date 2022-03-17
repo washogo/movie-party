@@ -1,6 +1,10 @@
 import Image from "next/image";
+import { useEffect } from "react";
 
 const Mypage = () => {
+  useEffect(() => {
+    
+  }, [])
   return (
     <>
       <div className="bg-WhiteGray grid grid-cols-12 grid-rows-3">
