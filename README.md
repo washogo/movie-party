@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ただ今実装中のため、変更する場合があります。
 
-## Getting Started
+# MovieParty 
 
-First, run the development server:
+## サイト概要
+映画を検索し、レビューを行い、映画好きな人と交流を図る
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## サイトテーマ
+- 映画見る前と見た後に一貫して利用することのできる映画レビューサイト
+- 映画好きな人と繋がり、共有したり、考察したり、議論したりすることができる
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ターゲットユーザー
+- 映画が好きな人
+- 好きな映画をテーマに誰かと交流したい人
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 主な利用シーン
+- 映画情報の検索
+- 映画の概要や感想を記録する
+- 映画について考察する
+- 映画について議論する
+- 映画に関して他者との情報交換
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## UI設計
+- Figmaを使用
+- https://www.figma.com/file/LdDW0eE4PzRqNw0LPBEvd0/MovieParty?node-id=8%3A8
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 機能
+- [ ] ユーザー認証機能
+- [ ] 外部API（TMDB）を利用した映画検索機能
+- [ ] 映画情報の詳細表示
+- [ ] 映画のレビュー作成
+- [ ] 他ユーザーとの交流
 
-## Learn More
+## 開発環境
+- OS：Mac
+- 言語：JavaScript, HTML, CSS
+- フレームワーク：React.js, Next.js
+- 状態管理ライブラリ：Recoil
+- CSSフレームワーク：Tailwind CSS
+- Firebase v9：FirebaseAuthentication, CloudFirestore
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## その他
+- アイコン素材：ReactIcons
+- アニメーション素材：LottieFiles
+- Firebase Hosting　を使用してデプロイする予定
