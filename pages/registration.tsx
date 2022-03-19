@@ -1,61 +1,77 @@
+import { addDoc, collection } from "firebase/firestore";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { db } from "../firebase/firebase";
+import { userState } from "../src/recoil/userState";
+
 const Registration = () => {
+  const [id, setId] = useState("");
+  const [imageUrl, setImageUrl] = useState("/nc96424.jpeg");
+  const router = useRouter();
+  const nickname = router.query.nickname;
+  const setUser = useSetRecoilState(userState);
+
+  const getImageUrl = (e: any) => {
+    const imageFile = e.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setImageUrl(imageUrl);
+  };
+
+  const createAccount = () => {
+    const ref = collection(db, "users");
+    addDoc(ref, {
+      id: id,
+      imageUrl: imageUrl,
+      nickname: nickname,
+    });
+    setUser({ id: id, imageUrl: imageUrl, nickname: nickname });
+    router.push("./loading/loading2");
+  };
+  
   return (
-    <>
-      <div
-        className="inline-flex flex-col items-center justify-end px-96 py-52 bg-Black shadow border border-black"
-        style={{ width: "1440px", height: "1024px" }}
-      >
-        <div
-          className="flex items-center justify-start pl-24 pr-28 pt-5 pb-6 bg-Gray"
-          style={{ width: "538px", height: "91px" }}
-        >
-          <p className="flex-1 h-full text-5xl font-bold text-center text-Black">
-            Your Info
-          </p>
+    <div className="flex flex-col items-center justify-center h-screen bg-Black shadow">
+      <div className="h-5/6 flex flex-col space-y-2 items-center justify-start px-14 bg-Gray">
+        <p className="basis-20 text-5xl font-bold text-center text-Black p-5">
+          Your Info
+        </p>
+        <div className="w-full pl-6 basis-20">
+          <p className="text-xl font-bold text-Black">ID</p>
+          <input
+            type="text"
+            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
         </div>
-        <div
-          className="flex flex-col space-y-16 items-start justify-start pl-14 pr-16 pt-0.5 pb-16 bg-Gray"
-          style={{ width: "538px", height: "507px" }}
-        >
-          <div
-            className="flex flex-col items-center justify-end"
-            style={{ width: "421px", height: "87px" }}
+        <div className="w-full pl-6">
+          <p className="text-xl font-bold text-Black">Your Image</p>
+          <input type="file" className="text-lg mt-3" onChange={getImageUrl} />
+        </div>
+        <div className="flex flex-row items-center mt-1 w-full basis-60">
+          <Image
+            src={imageUrl}
+            width="160px"
+            height="160px"
+            className="basis-5/12 rounded-full bg-White"
+            alt="user image"
+          />
+
+          <div className="basis-7/12 ml-5 h-12 rounded-lg bg-White text-3xl font-bold text-center p-1">
+            {nickname}
+          </div>
+        </div>
+        <div className="w-2/3 h-20 p-2">
+          <button
+            className="h-full w-full text-xl font-bold text-center text-Black bg-Primary rounded-full p-2"
+            onClick={createAccount}
           >
-            <p
-              className="text-xl font-bold text-Black"
-              style={{ width: "412px", height: "33.37px" }}
-            >
-              ID
-            </p>
-            <div
-              className="bg-White rounded-full"
-              style={{ width: "421px", height: "54px" }}
-            />
-          </div>
-          <div className="relative" style={{ width: "417px", height: "174px" }}>
-            <p
-              className="text-xl font-bold text-Black"
-              style={{ width: "412px", height: "33.37px" }}
-            >
-              Your Image
-            </p>
-            <div className="w-56 h-16 absolute right-0 bottom-0 bg-White rounded-lg mb-10">
-              <p className="flex-1 h-full text-xl font-bold text-center text-Black p-4">
-                Shogo
-              </p>
-            </div>
-            <div className="w-32 h-32 bg-White rounded-full" />
-          </div>
-          <div className="w-full h-14">
-            <div className="flex items-center flex-1 h-full w-2/3 px-10 pt-3 pb-2 m-auto bg-Primary rounded-full">
-              <p className="flex-1 h-full text-xl font-bold text-center text-Black">
-                Create your acount
-              </p>
-            </div>
-          </div>
+            Create Your Account
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

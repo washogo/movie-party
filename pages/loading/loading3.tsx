@@ -12,7 +12,10 @@ const Loading2 = () => {
   useEffect(() => {
     getRedirectResult(auth)
       .then((result) => {
-        router.push("/");
+        router.push({
+          pathname: "/registration",
+          query: { nickname: result?.user.displayName },
+        });
       })
       .catch((error) => {
         router.push("/signup");

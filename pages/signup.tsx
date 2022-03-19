@@ -44,7 +44,10 @@ const Signup = () => {
         .then((userCredential) => {
           const user = userCredential.user;
           const id = user.uid;
-          router.push({ pathname: "/registration", query: { id: id } });
+          router.push({
+            pathname: "/registration",
+            query: { id: id, nickname: name },
+          });
         })
         .catch((error) => {});
     } else if (password.length < 8) {
