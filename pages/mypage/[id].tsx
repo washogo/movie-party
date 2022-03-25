@@ -1,24 +1,70 @@
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { onAuth } from "../../firebase/auth";
+import { db } from "../../firebase/firebase";
+import { userState } from "../../src/recoil/userState";
+import { User } from "../../src/types/useUser";
 
 const Mypage = () => {
+  const auth = getAuth();
+  const router = useRouter();
+  const currentUser = auth.currentUser;
+  const [user, setUser] = useRecoilState(userState);
+
   useEffect(() => {
-    
-  }, [])
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const getCurrentUser = async () => {
+          const docRef = doc(db, "users", `${user.uid}`);
+          const docSnap = await getDoc(docRef);
+          const data = docSnap.data();
+          setUser({
+            id: data?.id,
+            nickname: data?.nickname,
+            imageUrl: data?.imageUrl,
+          });
+        };
+        getCurrentUser();
+      } else {
+        router.push("/signup");
+      }
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   const getCurrentUser = async () => {
+  //     const docRef = doc(db, "users", `${auth.currentUser?.uid}`);
+  //     const docSnap = await getDoc(docRef);
+  //     const data = docSnap.data();
+  //     console.log(data);
+  //   };
+  //   getCurrentUser();
+  // }, [currentUser]);
+
+  console.log(user);
+
   return (
     <>
-      <div className="bg-WhiteGray grid grid-cols-12 grid-rows-3">
-        <div className="col-start-2 col-span-2 row-span-3">
-          <div className="rounded-full bg-Primary w-1/2 h-full mx-auto"></div>
-        </div>
-        <div className="col-start-4 col-span-3 row-start-3 row-span-2">
-          <p className="text-Black text-3xl font-bold">shogo wada</p>
-        </div>
-        <div className="col-start-9 col-span-2 row-start-3 row-span-2">
-          <p className="text-Black text-xl">ID：１２３４５６</p>
-        </div>
-      </div>
-      <p className="xl:text-2xl font-bold text-center text-Black bg-Gray p-2 w-1/3">
+      {user !== null && (
+        <Image
+          src={user.imageUrl}
+          width="200px"
+          height="200px"
+          className="rounded-full bg-Primary"
+          alt="user image"
+          priority={true}
+          loading="eager"
+        />
+      )}
+      <div className="rounded-full bg-Primary w-1/2 h-full mx-auto"></div>
+      <p className="text-Black text-3xl font-bold">{user?.nickname}</p>
+          <p className="text-Black text-xl">ID：{user?.id}</p>
+      <p className="xl:text-2xl font-bold text-center text-Black p-2 w-1/3">
         MARVEL SPIDER-MAN~No Way Home~
       </p>
       <div className="xl:grid grid-cols-6 gap-2 mt-2 bg-Gray w-1/3 ">

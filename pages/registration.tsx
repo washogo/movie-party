@@ -1,27 +1,46 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
+import { fileURLToPath, urlToHttpOptions } from "url";
 import { db } from "../firebase/firebase";
 import { userState } from "../src/recoil/userState";
 
 const Registration = () => {
   const [id, setId] = useState("");
-  const [imageUrl, setImageUrl] = useState("/nc96424.jpeg");
+  const [previewUrl, setPreviewUrl] = useState("/nc96424.jpeg");
+  const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
+  const uid = router.query.id;
   const nickname = router.query.nickname;
   const setUser = useSetRecoilState(userState);
 
   const getImageUrl = (e: any) => {
-    const imageFile = e.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImageUrl(imageUrl);
+    const imageFile = e.target.files;
+    let blob = new Blob(imageFile, { type: "image/jpeg" });
+    const previewUrl = URL.createObjectURL(imageFile[0])
+    setPreviewUrl(previewUrl)
+
+    const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQISTUVWXYZ123456789";
+    const N = 16;
+    const fileName = Array.from(
+      crypto.getRandomValues(new Uint32Array(N))
+    ).map((n) => S[n%S.length]).join('');
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `${fileName}`);
+    // 'file' comes from the Blob or File API
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      getDownloadURL(ref(storage, `${fileName}`)).then((url) => {
+        setImageUrl(url)
+      })
+    });
   };
 
   const createAccount = () => {
-    const ref = collection(db, "users");
-    addDoc(ref, {
+    setDoc(doc(db, "users", `${uid}`), {
       id: id,
       imageUrl: imageUrl,
       nickname: nickname,
@@ -29,7 +48,9 @@ const Registration = () => {
     setUser({ id: id, imageUrl: imageUrl, nickname: nickname });
     router.push("./loading/loading2");
   };
-  
+
+  console.log(imageUrl)
+
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-Black shadow">
       <div className="h-5/6 flex flex-col space-y-2 items-center justify-start px-14 bg-Gray">
@@ -51,7 +72,7 @@ const Registration = () => {
         </div>
         <div className="flex flex-row items-center mt-1 w-full basis-60">
           <Image
-            src={imageUrl}
+            src={previewUrl}
             width="160px"
             height="160px"
             className="basis-5/12 rounded-full bg-White"

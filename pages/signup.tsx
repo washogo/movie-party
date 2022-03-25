@@ -6,8 +6,9 @@ import {
   signInWithRedirect,
 } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { onAuth } from "../firebase/auth";
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -18,24 +19,9 @@ const Signup = () => {
   const router = useRouter();
   const GoogleProvider = new GoogleAuthProvider();
 
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if(user){
-  //       if (currentUser !== null) {
-  //         showMessage({
-  //           title: "警告",
-  //           description: "ログインしています",
-  //           status: "warning",
-  //         });
-  //       } else {
-  //         return;
-  //       }
-  //     }
-  //     else{
-  //       return;
-  //     }
-  //   })
-  // }, [auth]);
+  useEffect(() => {
+    onAuth(auth, router);
+  }, [auth])
 
   const onClickSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
@@ -71,6 +57,7 @@ const Signup = () => {
           <input
             type="text"
             className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className="w-full pl-6">
