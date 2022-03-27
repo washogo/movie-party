@@ -68,7 +68,7 @@ const Registration = () => {
         </div>
         <div className="w-full pl-6">
           <p className="text-xl font-bold text-Black">Your Image</p>
-          <input type="file" className="text-lg mt-3" onChange={getImageUrl} />
+          <input type="file" className="text-lg mt-3" onChange={(e) => getImageUrl(e)} />
         </div>
         <div className="flex flex-row items-center mt-1 w-full basis-60">
           <Image

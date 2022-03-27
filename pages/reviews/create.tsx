@@ -10,6 +10,7 @@ import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
 import { db } from "../../firebase/firebase";
 import { movieState } from "../../src/recoil/movieState";
+import { userState } from "../../src/recoil/userState";
 
 const Create = () => {
   const [evaluation, setEvaluation] = useState(0);
@@ -18,9 +19,13 @@ const Create = () => {
   const router = useRouter();
   const [starIds, setStarIds] = useState<Array<number>>([]);
   const [isSelected, setIsSelected] = useState(0);
+  const user = useRecoilValue(userState);
 
   const onClickCreate = async () => {
     await addDoc(collection(db, "reviews"), {
+      userId: user?.id,
+      movieTitle: movie?.title,
+      imagePath: movie?.poster_path,
       evaluation,
       review,
     });
@@ -28,6 +33,7 @@ const Create = () => {
     setIsSelected(0);
     setEvaluation(0);
     setReview("");
+    router.push("/")
   };
 
   const onHoverStar = (e: any) => {

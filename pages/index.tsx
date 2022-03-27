@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import axios from "./api/axios";
+import "../firebase/firebase"
 import Image from "next/image";
 import { FaHamburger } from "react-icons/fa";
 import {
@@ -15,6 +16,7 @@ import { requests } from "./api/apiConfig";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Hamburger from "../components/atoms/Hamburger";
+import { getAuth } from "firebase/auth";
 
 type Movie = {
   id: number;
@@ -28,6 +30,7 @@ const Home: NextPage = () => {
   const [movies, setMovies] = useState<Array<Movie>>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
+  const auth = getAuth();
 
   useEffect(() => {
     const getMovies = async () => {
@@ -49,12 +52,12 @@ const Home: NextPage = () => {
     <>
       <Header />
       <div className="bg-Secondary relative">
-        <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
+        <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
         {movies.length !== 0 && (
           <div
             className={
               openMenu
-                ? "bg-Secondary w-full opacity-25"
+                ? "bg-Secondary w-full opacity-25 pointer-events-none"
                 : "bg-Secondary w-full"
             }
           >
