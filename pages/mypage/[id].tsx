@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -18,18 +17,13 @@ import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
 import { db } from "../../firebase/firebase";
 import { userState } from "../../src/recoil/userState";
-import { Movie } from "../../src/types/useMovie";
 import { Review } from "../../src/types/useReview";
-import { User } from "../../src/types/useUser";
-import { API_KEY } from "../api/apiConfig";
 
 const Mypage = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const auth = getAuth();
   const router = useRouter();
-  const currentUser = auth.currentUser;
   const [user, setUser] = useRecoilState(userState);
-  const [movies, setMovies] = useState<any>([]);
   const [reviews, setReviews] = useState<Array<Review>>([]);
   const [authChecked, setAuthChecked] = useState(false);
 
@@ -75,29 +69,6 @@ const Mypage = () => {
     };
     getReviews();
   }, [user]);
-
-  // useEffect(() => {
-  //   const getDetail = async (id: number) => {
-  //     await axios
-  //       .get(
-  //         `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=ja-JP`
-  //       )
-  //       .then((result) => {
-  //         const movie = result.data;
-  //         console.log(movie)
-  //         // setMovies([...movies, movie])
-  //       })
-  //       .catch((error) => {
-  //         console.log(error.message);
-  //       });
-  //   };
-  //   reviews.map((review) => getDetail(review.movieId));
-  // }, [reviews]);
-
-  console.log(reviews);
-  // console.log(movies);
-  // console.log(user);
-  // console.log(openMenu);
 
   return (
     <div className="bg-Black">
@@ -167,7 +138,6 @@ const Mypage = () => {
                 </button>
               </div>
             </div>
-            {/* <div className="col-span-1"></div> */}
           </>
         ))}
       </div>
