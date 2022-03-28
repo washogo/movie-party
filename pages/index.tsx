@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
 import axios from "./api/axios";
-import "../firebase/firebase"
+import "../firebase/firebase";
 import Image from "next/image";
 import { FaHamburger } from "react-icons/fa";
 import {
@@ -49,9 +50,9 @@ const Home: NextPage = () => {
   console.log(movies);
 
   return (
-    <>
+    <div className="h-full relative">
       <Header />
-      <div className="bg-Secondary relative">
+      <div className="bg-Secondary pb-36">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
         {movies.length !== 0 && (
           <div
@@ -61,108 +62,18 @@ const Home: NextPage = () => {
                 : "bg-Secondary w-full"
             }
           >
-            <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl w-5/6">
+            <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl w-[1000px] h-[200px]">
               <IoIosArrowDropleftCircle className="w-16 h-16 rounded-lg" />
-              <div className="w-full flex space-x-11 items-center overflow-x-auto scroll-smooth">
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[0].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[1].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[2].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[3].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[4].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[5].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[6].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[7].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[8].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[9].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
-                <div>
-                  <Image
-                    width="190px"
-                    height="220px"
-                    src={`https://image.tmdb.org/t/p/w500/${movies[10].poster_path}`}
-                    alt="movie_sample"
-                    layout="fixed"
-                  />
-                </div>
+              <div className="flex items-center space-x-2 overflow-x-auto scroll-smooth w-[900px]">
+                {movies.map((movie) => (
+                  <div key={movie.id}>
+                    <img
+                      className="w-[133px] h-[200px] mr-[20vh]"
+                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                      alt="movie_sample"
+                    />
+                  </div>
+                ))}
               </div>
               <IoIosArrowDroprightCircle className="w-16 h-16 rounded-lg" />
             </div>
@@ -185,10 +96,10 @@ const Home: NextPage = () => {
                     </p>
                   </div>
                   <div>
-                    <Image
-                      width="318.56px"
+                    <img
+                      width="318px"
                       height="469px"
-                      layout="responsive"
+                      className="h-[432px] w-[288px]"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt="movie sample1"
                     />
@@ -212,7 +123,7 @@ const Home: NextPage = () => {
         )}
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

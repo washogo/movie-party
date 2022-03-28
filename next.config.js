@@ -7,4 +7,5 @@ module.exports = {
   images: {
     domains: ["image.tmdb.org", "firebasestorage.googleapis.com"],
   },
+  trailingSlash: true,
 };

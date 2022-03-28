@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Image from "next/image";
@@ -71,7 +72,7 @@ const Registration = () => {
           <input type="file" className="text-lg mt-3" onChange={(e) => getImageUrl(e)} />
         </div>
         <div className="flex flex-row items-center mt-1 w-full basis-60">
-          <Image
+          <img
             src={previewUrl}
             width="160px"
             height="160px"

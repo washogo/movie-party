@@ -51,4 +51,5 @@
 - アニメーション素材：LottieFiles
 - 外部API(映画情報): TMDB
 - https://www.themoviedb.org/?language=ja
-- Firebase Hosting　を使用してデプロイする予定
+- Firebase Hosting　を使用してデプロイ
+- https://movie-party-4d407.web.app/

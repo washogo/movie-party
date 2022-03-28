@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
@@ -7,7 +8,7 @@ import { Header } from "../../../components/molecules/Header";
 
 const Edit = () => {
   return (
-    <>
+    <div className="h-full relative">
       <Header />
       <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
       <div className="grid grid-cols-12">
@@ -18,10 +19,8 @@ const Edit = () => {
           <div className="lg:grid grid-cols-3 gap-x-2 mt-3">
             <div className="col-span-1">
               <div>
-                <Image
-                  width="318.56px"
-                  height="469px"
-                  layout="responsive"
+                <img
+                  className="w-[394px] h-[591px]"
                   src="/movie_sample.jpeg"
                   alt="movie sample1"
                 />
@@ -88,7 +87,7 @@ const Edit = () => {
       </div>
       <div></div>
       <Footer />
-    </>
+    </div>
   );
 };
 

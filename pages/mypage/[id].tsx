@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   collection,
@@ -71,16 +72,20 @@ const Mypage = () => {
   }, [user]);
 
   return (
-    <div className="bg-Black">
+    <div className="bg-Black h-full relative">
       <Header />
       {user !== null && authChecked && (
-        <div className={openMenu ? "grid grid-cols-12 grid-rows-3 w-full h-32 bg-WhiteGray opacity-25 pointer-events-none mb-10" : "grid grid-cols-12 grid-rows-3 w-full h-32 bg-WhiteGray mb-10"}>
+        <div
+          className={
+            openMenu
+              ? "grid grid-cols-12 grid-rows-3 w-full h-32 bg-WhiteGray opacity-25 pointer-events-none mb-10"
+              : "grid grid-cols-12 grid-rows-3 w-full h-32 bg-WhiteGray mb-10"
+          }
+        >
           <div className="col-start-2 col-span-1">
-            <Image
+            <img
               src={user.imageUrl}
-              width="120px"
-              height="120px"
-              className="rounded-full bg-Primary"
+              className="rounded-full bg-Primary h-[120px] w-[120px]"
               alt="user image"
             />
           </div>
@@ -93,19 +98,23 @@ const Mypage = () => {
         </div>
       )}
       <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
-      <div className={openMenu ? "container mx-20  grid grid-cols-10 opacity-25 pointer-events-none" : "container mx-20  grid grid-cols-10"}>
+      <div
+        className={
+          openMenu
+            ? "container mx-20 grid grid-cols-10 opacity-25 pointer-events-none h-full"
+            : "container mx-20 grid grid-cols-10 h-full"
+        }
+      >
         {reviews.map((review, index) => (
           <>
-            <div key={review.id} className="col-span-5 mx-10 mt-3 bg-WhiteGray">
+            <div key={review.id} className="col-span-5 mx-10 mb-20 bg-WhiteGray">
               <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
                 {review.movieTitle}
               </p>
               <div className="xl:grid grid-cols-6 w-full">
                 <div className="col-start-1 col-span-3">
-                  <Image
-                    width="318.56px"
-                    height="469px"
-                    layout="responsive"
+                  <img
+                    className=" h-[420px] w-[280px]"
                     src={`https://image.tmdb.org/t/p/w500/${review.imagePath}`}
                     alt="movie sample1"
                   />

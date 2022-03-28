@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { addDoc, collection } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -58,7 +59,7 @@ const Create = () => {
 
   return (
     movie !== null && (
-      <div className="bg-Primary">
+      <div className="bg-Primary h-full relative">
         <Header />
         <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
         <div className="grid grid-cols-12 mb-10">
@@ -69,13 +70,10 @@ const Create = () => {
             <div className="lg:grid grid-cols-3 gap-x-2 mt-3">
               <div className="col-span-1">
                 <div>
-                  <Image
-                    width="318.56px"
-                    height="469px"
-                    layout="responsive"
+                  <img
+                    className="w-[394px] h-[591px]"
                     src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                     alt="movie sample"
-                    priority={true}
                   />
                 </div>
                 <div className="w-full grid grid-cols-6 content-center bg-Black">
