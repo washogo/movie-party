@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { addDoc, collection } from "firebase/firestore";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
@@ -59,10 +58,10 @@ const Create = () => {
 
   return (
     movie !== null && (
-      <div className="bg-Primary h-full relative">
+      <div className="bg-Primary h-full relative pb-32">
         <Header />
         <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
-        <div className="grid grid-cols-12 mb-10">
+        <div className="grid grid-cols-12">
           <div className="col-start-2 col-span-10">
             <p className="text-4xl font-bold text-center text-White bg-Gray border-b-4 border-b-Black">
               {movie.title}

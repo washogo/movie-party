@@ -8,7 +8,6 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
@@ -72,7 +71,7 @@ const Mypage = () => {
   }, [user]);
 
   return (
-    <div className="bg-Black h-full relative">
+    <div className="bg-Black h-full relative pb-32">
       <Header />
       {user !== null && authChecked && (
         <div
@@ -107,7 +106,7 @@ const Mypage = () => {
       >
         {reviews.map((review, index) => (
           <>
-            <div key={review.id} className="col-span-5 mx-10 mb-20 bg-WhiteGray">
+            <div key={review.id} className="col-span-5 mx-10 mt-5 bg-WhiteGray">
               <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
                 {review.movieTitle}
               </p>

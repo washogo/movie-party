@@ -35,8 +35,8 @@ const Signin = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black">
-        <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 my-10 pb-8 bg-Primary">
+      <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black pb-40">
+        <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 pb-8 bg-Primary">
           <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">
             Sign in
           </p>

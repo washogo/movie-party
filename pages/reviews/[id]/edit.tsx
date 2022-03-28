@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
@@ -8,7 +7,7 @@ import { Header } from "../../../components/molecules/Header";
 
 const Edit = () => {
   return (
-    <div className="h-full relative">
+    <div className="h-full relative bg-Primary pb-32">
       <Header />
       <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
       <div className="grid grid-cols-12">
@@ -25,7 +24,7 @@ const Edit = () => {
                   alt="movie sample1"
                 />
               </div>
-              <div className="w-full grid grid-cols-6 content-center bg-Black">
+              <div className="w-full grid grid-cols-6 content-center">
                 <AiFillEye className="w-full h-8 rounded-lg" />
                 <p className="w-full text-xl font-bold text-center text-White">
                   13k
@@ -38,7 +37,7 @@ const Edit = () => {
                 <AiOutlineStar className="w-full h-8 rounded-lg" />
               </div>
             </div>
-            <div className="col-span-2 lg:grid grid-rows-10 gap-3 bg-WhiteGray">
+            <div className="col-span-2 lg:grid grid-rows-10 gap-3">
               <div className="row-span-1">
                 <label
                   htmlFor="evaluation"
