@@ -11,12 +11,15 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Hamburger from "../../components/atoms/Hamburger";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
+import { Auth } from "../../firebase/auth";
 import { db } from "../../firebase/firebase";
+import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
 import { userState } from "../../src/recoil/userState";
+import { Movie } from "../../src/types/useMovie";
 import { Review } from "../../src/types/useReview";
 
 const Mypage = () => {
@@ -26,25 +29,11 @@ const Mypage = () => {
   const [user, setUser] = useRecoilState(userState);
   const [reviews, setReviews] = useState<Array<Review>>([]);
   const [authChecked, setAuthChecked] = useState(false);
+  const { getAuthState } = Auth({ auth, user, setUser });
+  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const getCurrentUser = async () => {
-          const docRef = doc(db, "users", `${user.uid}`);
-          const docSnap = await getDoc(docRef);
-          const data = docSnap.data();
-          setUser({
-            id: data?.id,
-            nickname: data?.nickname,
-            imageUrl: data?.imageUrl,
-          });
-        };
-        getCurrentUser();
-      } else {
-        router.push("/signin");
-      }
-    });
+    getAuthState();
     setAuthChecked(true);
   }, [auth]);
 
@@ -72,7 +61,7 @@ const Mypage = () => {
 
   return (
     <div className="bg-Black h-full relative pb-32">
-      <Header />
+      <Header setSearchMovies={setSearchMovies} />
       {user !== null && authChecked && (
         <div
           className={
@@ -100,11 +89,15 @@ const Mypage = () => {
       <div
         className={
           openMenu
-            ? "container mx-20 grid grid-cols-10 opacity-25 pointer-events-none h-full"
+            ? reviews.length === 0
+              ? "container mx-20 grid grid-cols-10 opacity-25 pointer-events-none h-screen"
+              : "container mx-20 grid grid-cols-10 opacity-25 pointer-events-none h-full"
+            : reviews.length === 0
+            ? "container mx-20 grid grid-cols-10 h-screen"
             : "container mx-20 grid grid-cols-10 h-full"
         }
       >
-        {reviews.map((review, index) => (
+        {reviews.length > 0 && reviews.map((review) => (
           <>
             <div key={review.id} className="col-span-5 mx-10 mt-5 bg-WhiteGray">
               <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">

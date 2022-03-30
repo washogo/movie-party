@@ -1,10 +1,12 @@
 export type Movie = {
-  id: any;
-  title: any;
-  popularity: any;
-  vote_count: any;
-  poster_path: any;
-  production_countries: any;
+  id: number;
+  title: string;
+  popularity: number;
+  vote_count: number;
+  poster_path: string;
+  production_countries: [
+    {name: string}
+  ];
   release_date: string;
   runtime: number | null;
   overview: string | null;

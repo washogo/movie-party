@@ -1,8 +1,11 @@
 import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { FaHamburger } from "react-icons/fa";
+import { useRecoilValue } from "recoil";
+import { toast } from "react-toastify"
+import { userState } from "../../src/recoil/userState";
+
 
 type Props = {
   openMenu: boolean;
@@ -13,6 +16,8 @@ type Props = {
 const Hamburger = (props: Props) => {
   const { openMenu, setOpenMenu, auth } = props;
   const router = useRouter();
+  const user = useRecoilValue(userState)
+
   const menuFunction = () => {
     setOpenMenu(!openMenu);
   };
@@ -23,7 +28,7 @@ const Hamburger = (props: Props) => {
         router.push("/signin");
       })
       .catch((error) => {
-        console.log(error);
+        toast.warning("ログアウトできません")
       });
   };
 
@@ -43,6 +48,7 @@ const Hamburger = (props: Props) => {
             ? "w-1/3 h-screen opacity-100 absolute top-1 left-0 bg-black text-White rounded-lg"
             : "w-0 h-0 opacity-0 bg-Black text-White transition-transform"
         }
+        onClick={() => menuFunction()}
       >
         <ul>
           <div onClick={() => menuFunction()}>
@@ -56,7 +62,7 @@ const Hamburger = (props: Props) => {
             </Link>
           </li>
           <li className="mt-14 ml-16">
-            <Link href="/">
+            <Link href={`/mypage/${user?.id}`}>
               <a>
                 <p className="text-6xl font-bold">MyPage</p>
               </a>
@@ -66,6 +72,13 @@ const Hamburger = (props: Props) => {
             <a>
               <p className="text-6xl font-bold">LogOut</p>
             </a>
+          </li>
+          <li className="mt-14 ml-16">
+            <Link href="/signup">
+              <a>
+                <p className="text-6xl font-bold">SignUp</p>
+              </a>
+            </Link>
           </li>
         </ul>
       </div>

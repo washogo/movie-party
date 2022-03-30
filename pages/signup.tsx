@@ -8,19 +8,22 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { onAuth } from "../firebase/auth";
+import { Auth } from "../firebase/auth";
+import { useRecoilState } from "recoil";
+import { userState } from "../src/recoil/userState";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useRecoilState(userState);
   const auth = getAuth();
-  const currentUser = auth.currentUser;
   const router = useRouter();
   const GoogleProvider = new GoogleAuthProvider();
+  const { getAuthState } = Auth({auth, user, setUser});
 
   useEffect(() => {
-    onAuth(auth, router);
+    getAuthState();
   }, [auth])
 
   const onClickSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {

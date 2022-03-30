@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { toast } from "react-toastify"
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
-import { movieState } from "../../src/recoil/movieState";
+import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
 import { Cast, Genre, Movie } from "../../src/types/useMovie";
 import { API_KEY } from "../api/apiConfig";
 
@@ -18,6 +19,7 @@ const Movie = () => {
   const [movie, setMovie] = useRecoilState<Movie | null>(movieState);
   const [director, setDirector] = useState("");
   const [casts, setCasts] = useState<Array<Cast>>([]);
+  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   useEffect(() => {
     const getDetail = async () => {
@@ -33,7 +35,7 @@ const Movie = () => {
         });
     };
     getDetail();
-  }, [id, setMovie]);
+  }, []);
 
   useEffect(() => {
     const getCredit = async () => {
@@ -43,7 +45,6 @@ const Movie = () => {
       https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_KEY}`
         )
         .then((result) => {
-          console.log(result.data);
           const crews = result.data.crew;
           const casts = result.data.cast;
           const director = crews.find((crew: any) => crew.job === "Director");
@@ -51,15 +52,17 @@ const Movie = () => {
           setCasts(casts);
         })
         .catch((error) => {
-          console.log(error.message);
+          toast.error("クレジットが見つかりませんでした")
         });
     };
     getCredit();
   }, [id]);
 
+  console.log(movie)
+
   return (
     <div className="bg-Tertiary h-full relative pb-32">
-      <Header />
+      <Header setSearchMovies={setSearchMovies} />
       {movie && director && casts && (
         <>
           <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
@@ -170,10 +173,10 @@ const Movie = () => {
                   router.push("/reviews/create");
                 }}
               >
-                レビュー
+                Review
               </button>
-              <button className="bg-Secondary rounded-full hover:bg-Black px-6">
-                一覧画面
+              <button className="bg-Secondary rounded-full hover:bg-Black px-6" onClick={() => router.push("/")}>
+                Back
               </button>
             </div>
           </div>

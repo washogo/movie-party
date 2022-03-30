@@ -5,12 +5,14 @@ import { useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsFillStarFill, BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
-import { useRecoilValue } from "recoil";
+import { toast } from "react-toastify";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { db } from "../../firebase/firebase";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
-import { db } from "../../firebase/firebase";
-import { movieState } from "../../src/recoil/movieState";
+import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
 import { userState } from "../../src/recoil/userState";
+import { Movie } from "../../src/types/useMovie";
 
 const Create = () => {
   const [evaluation, setEvaluation] = useState(0);
@@ -20,6 +22,7 @@ const Create = () => {
   const [starIds, setStarIds] = useState<Array<number>>([]);
   const [isSelected, setIsSelected] = useState(0);
   const user = useRecoilValue(userState);
+  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   const onClickCreate = async () => {
     await addDoc(collection(db, "reviews"), {
@@ -33,7 +36,9 @@ const Create = () => {
     setIsSelected(0);
     setEvaluation(0);
     setReview("");
-    router.push("/")
+    toast.success("レビューを保存しました", {
+      onClose: () => router.push("/"),
+    });
   };
 
   const onHoverStar = (e: any) => {
@@ -59,7 +64,7 @@ const Create = () => {
   return (
     movie !== null && (
       <div className="bg-Primary h-full relative pb-32">
-        <Header />
+        <Header setSearchMovies={setSearchMovies} />
         <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
         <div className="grid grid-cols-12">
           <div className="col-start-2 col-span-10">

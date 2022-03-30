@@ -1,10 +1,19 @@
-import { getAuth, getRedirectResult } from "firebase/auth";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { useEffect } from "react";
 import Lottie from "react-lottie";
+import { useRecoilState, useRecoilValue } from "recoil";
 import animationData from "../../src/json/81986-movie.json";
+import { loadingState } from "../../src/recoil/loadingState";
 
 const Loading1 = () => {
+  const router = useRouter();
+  const url = router.query.url
+  const [isLoading, setIsLoading] = useRecoilState(loadingState);
+
+  useEffect(() => {
+    isLoading === false && router.push(`${url}`);
+  }, [isLoading])
+
   const defaultOptions = {
     loop: true,
     autoplay: true,

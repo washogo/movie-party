@@ -2,25 +2,38 @@ import "../firebase/firebase"
 import {
   getAuth,
   GoogleAuthProvider,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithRedirect,
 } from "firebase/auth";
 import { useRouter } from "next/router";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { userState } from "../src/recoil/userState";
+import { useRecoilState } from "recoil";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
   const auth = getAuth();
   const GoogleProvider = new GoogleAuthProvider();
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        router.push(`/mypage/${user?.id}`)
+      } else {
+        return;
+      }
+    })
+  }, [])
+
   const onClickSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const id = userCredential.user.uid;
-        router.push(`/mypage/${id}`);
+        router.push(`/mypage/${user?.id}`);
       })
       .catch((error) => {
         console.log(error);

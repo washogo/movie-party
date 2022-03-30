@@ -2,8 +2,6 @@
 import type { NextPage } from "next";
 import axios from "./api/axios";
 import "../firebase/firebase";
-import Image from "next/image";
-import { FaHamburger } from "react-icons/fa";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
@@ -15,46 +13,57 @@ import { Footer } from "../components/molecules/Footer";
 import { useEffect, useState } from "react";
 import { requests } from "./api/apiConfig";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import Hamburger from "../components/atoms/Hamburger";
 import { getAuth } from "firebase/auth";
-
-type Movie = {
-  id: number;
-  title: string;
-  poster_path: any;
-  popularity: number;
-  vote_count: number;
-};
+import { useRecoilState } from "recoil";
+import {
+  moviesState,
+  searchMoviesState,
+} from "../src/recoil/movieState";
+import { Movie } from "../src/types/useMovie";
 
 const Home: NextPage = () => {
-  const [movies, setMovies] = useState<Array<Movie>>([]);
+  const [movies, setMovies] = useRecoilState<Movie[]>(moviesState);
+  const [searchMovies, setSearchMovies] =
+    useRecoilState<Movie[]>(searchMoviesState);
+  const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
-  const [openMenu, setOpenMenu] = useState(false);
   const auth = getAuth();
+  const [openMenu, setOpenMenu] = useState(false);
 
   useEffect(() => {
-    const getMovies = async () => {
-      await axios
+    const getPopMovies = () => {
+      axios
         .get(requests.fetchPopular)
         .then((result) => {
-          setMovies(result.data.results);
+          const data = result.data.results;
+          setPopMovies(data);
+          setMovies(data);
+          setSearchMovies([])
         })
         .catch((error) => {
           console.log(error);
         });
     };
-    getMovies();
+    getPopMovies();
+    console.log(1)
   }, []);
 
-  console.log(movies);
+  useEffect(() => {
+    if (searchMovies && searchMovies.length > 0) {
+      setMovies(searchMovies);
+    }
+    console.log(3)
+  }, [movies])
+
+  console.log(movies)
 
   return (
     <div className="h-full relative">
-      <Header />
+      <Header setSearchMovies={setSearchMovies} />
       <div className="bg-Secondary pb-36">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
-        {movies.length !== 0 && (
+        {movies !== null && movies.length > 0 && (
           <div
             className={
               openMenu
@@ -65,12 +74,12 @@ const Home: NextPage = () => {
             <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl w-[1000px] h-[200px]">
               <IoIosArrowDropleftCircle className="w-16 h-16 rounded-lg" />
               <div className="flex items-center space-x-2 overflow-x-auto scroll-smooth w-[900px]">
-                {movies.map((movie) => (
+                {popMovies.map((movie) => (
                   <div key={movie.id}>
                     <img
                       className="w-[133px] h-[200px] mr-[20vh]"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      alt="movie_sample"
+                      alt="no_image"
                     />
                   </div>
                 ))}
@@ -78,7 +87,7 @@ const Home: NextPage = () => {
               <IoIosArrowDroprightCircle className="w-16 h-16 rounded-lg" />
             </div>
             <div className="flex flex-wrap justify-center">
-              {movies.map((movie, index) => (
+              {movies.map((movie) => (
                 <div className="items-center w-1/5 mt-10 mr-2" key={movie.id}>
                   <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
                     <p
@@ -101,7 +110,7 @@ const Home: NextPage = () => {
                       height="469px"
                       className="h-[432px] w-[288px]"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      alt="movie sample1"
+                      alt="no_image"
                     />
                   </div>
                   <div className="w-full grid grid-cols-6 gap-2 content-center">

@@ -2,13 +2,18 @@
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { Footer } from "../../../components/molecules/Footer";
 import { Header } from "../../../components/molecules/Header";
+import { moviesState, movieState, searchMoviesState } from "../../../src/recoil/movieState";
+import { Movie } from "../../../src/types/useMovie";
 
 const Edit = () => {
+  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
+
   return (
     <div className="h-full relative bg-Primary pb-32">
-      <Header />
+      <Header setSearchMovies={setSearchMovies} />
       <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
       <div className="grid grid-cols-12">
         <div className="col-start-2 col-span-10">
