@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import Lottie from "react-lottie";
 import animationData from "../../src/json/1961-movie-loading.json";
 
-const Loading2 = () => {
+const Loading3 = () => {
   const auth = getAuth();
   const router = useRouter();
 
@@ -38,4 +38,4 @@ const Loading2 = () => {
   );
 };
 
-export default Loading2;
+export default Loading3;

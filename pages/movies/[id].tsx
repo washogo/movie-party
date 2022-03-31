@@ -12,14 +12,26 @@ import { Header } from "../../components/molecules/Header";
 import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
 import { Cast, Genre, Movie } from "../../src/types/useMovie";
 import { API_KEY } from "../api/apiConfig";
+import Hamburger from "../../components/atoms/Hamburger";
+import { getAuth } from "firebase/auth";
+import { userState } from "../../src/recoil/userState";
+import { Auth } from "../../firebase/auth";
 
 const Movie = () => {
+  const [openMenu, setOpenMenu] = useState(false);
+  const auth = getAuth();
+  const [user, setUser] = useRecoilState(userState);
+  const { getAuthState } = Auth({ auth, user, setUser });
   const router = useRouter();
   const id = router.query.id;
   const [movie, setMovie] = useRecoilState<Movie | null>(movieState);
   const [director, setDirector] = useState("");
   const [casts, setCasts] = useState<Array<Cast>>([]);
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
+
+  useEffect(() => {
+    getAuthState();
+  }, [auth]);
 
   useEffect(() => {
     const getDetail = async () => {
@@ -63,9 +75,9 @@ const Movie = () => {
   return (
     <div className="bg-Tertiary h-full relative pb-32">
       <Header setSearchMovies={setSearchMovies} />
+      <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
       {movie && director && casts && (
         <>
-          <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
           <div className="grid grid-cols-12">
             <div className="col-start-2 col-span-10">
               <p className="text-4xl font-bold text-center text-White border-b-4 border-Black mb-3">

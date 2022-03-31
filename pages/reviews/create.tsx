@@ -1,28 +1,42 @@
 /* eslint-disable @next/next/no-img-element */
 import { addDoc, collection } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsFillStarFill, BsStars } from "react-icons/bs";
 import { FaHamburger } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { db } from "../../firebase/firebase";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
-import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
+import {
+  moviesState,
+  movieState,
+  searchMoviesState,
+} from "../../src/recoil/movieState";
 import { userState } from "../../src/recoil/userState";
 import { Movie } from "../../src/types/useMovie";
+import Hamburger from "../../components/atoms/Hamburger";
+import { getAuth } from "firebase/auth";
+import { Auth } from "../../firebase/auth";
 
 const Create = () => {
+  const [openMenu, setOpenMenu] = useState(false);
+  const auth = getAuth();
+  const [user, setUser] = useRecoilState(userState);
+  const { getAuthState } = Auth({ auth, user, setUser });
   const [evaluation, setEvaluation] = useState(0);
   const [review, setReview] = useState("");
   const movie = useRecoilValue(movieState);
   const router = useRouter();
-  const [starIds, setStarIds] = useState<Array<number>>([]);
   const [isSelected, setIsSelected] = useState(0);
-  const user = useRecoilValue(userState);
+  const [isClicked, setIsClicked] = useState(true);
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
+
+  useEffect(() => {
+    getAuthState();
+  }, [auth]);
 
   const onClickCreate = async () => {
     await addDoc(collection(db, "reviews"), {
@@ -32,7 +46,6 @@ const Create = () => {
       evaluation,
       review,
     });
-    setStarIds([]);
     setIsSelected(0);
     setEvaluation(0);
     setReview("");
@@ -41,31 +54,33 @@ const Create = () => {
     });
   };
 
-  const onHoverStar = (e: any) => {
-    const id = Number(e.target.id);
-    const arr = [...Array(id)].map((_, i) => i);
-    setStarIds(arr);
+  const onHoverStar = (num: number) => {
+    setIsClicked(false);
+    setIsSelected(num);
   };
 
-  const onHoverOut = (e: any) => {
-    setStarIds([]);
+  const onHoverOut = () => {
+    setIsSelected(0);
   };
 
   const onClickStar = (num: number) => {
-    if (isSelected === 0) {
-      setIsSelected(num);
-      setEvaluation(num);
-    } else {
-      setIsSelected(0);
-      setEvaluation(0);
+    if (num === isSelected && isClicked === true) {
+      setIsClicked(false);
+    } else if (
+      (num === isSelected && isClicked === false) ||
+      num !== isSelected
+    ) {
+      setIsClicked(true);
     }
+    setIsSelected(num);
+    setEvaluation(num);
   };
 
   return (
     movie !== null && (
       <div className="bg-Primary h-full relative pb-32">
         <Header setSearchMovies={setSearchMovies} />
-        <FaHamburger className="w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg" />
+        <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
         <div className="grid grid-cols-12">
           <div className="col-start-2 col-span-10">
             <p className="text-4xl font-bold text-center text-White bg-Gray border-b-4 border-b-Black">
@@ -103,7 +118,15 @@ const Create = () => {
                     {[...Array(5)]
                       .map((_, i) => i + 1)
                       .map((num) =>
-                        starIds.length >= num || isSelected >= num ? (
+                        isClicked && isSelected >= num ? (
+                          <BsFillStarFill
+                            key={num}
+                            size="50"
+                            className="text-Warning mr-5"
+                            onClick={() => onClickStar(num)}
+                            cursor="pointer"
+                          />
+                        ) : isSelected >= num ? (
                           <BsFillStarFill
                             key={num}
                             size="50"
@@ -115,10 +138,10 @@ const Create = () => {
                         ) : (
                           <BsFillStarFill
                             key={num}
-                            id={String(num)}
                             size="50"
                             className="text-White hover:text-Warning mr-5"
-                            onMouseEnter={onHoverStar}
+                            onMouseEnter={() => onHoverStar(num)}
+                            onClick={() => onClickStar(num)}
                           />
                         )
                       )}

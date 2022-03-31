@@ -17,7 +17,7 @@ export const Auth = (props: Props) => {
   const getAuthState = () => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        const getCurrentUser = async () => {
+        const getCorrectUser = async () => {
           const docRef = doc(db, "users", `${currentUser.uid}`);
           const docSnap = await getDoc(docRef);
           const data = docSnap.data();
@@ -33,7 +33,7 @@ export const Auth = (props: Props) => {
             });
           }
         };
-        getCurrentUser();
+        getCorrectUser();
       } else {
         router.push("/signin");
       }

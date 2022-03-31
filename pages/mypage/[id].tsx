@@ -54,7 +54,9 @@ const Mypage = () => {
           review: doc.data().review,
         }));
         setReviews(arr);
-      });
+      }).catch((error) => {
+        console.log(error);
+      })
     };
     getReviews();
   }, [user]);

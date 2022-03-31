@@ -1,41 +1,29 @@
-import "../firebase/firebase"
+import "../firebase/firebase";
 import {
   getAuth,
   GoogleAuthProvider,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithRedirect,
 } from "firebase/auth";
 import { useRouter } from "next/router";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { userState } from "../src/recoil/userState";
-import { useRecoilState } from "recoil";
+import { toast } from "react-toastify";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
   const auth = getAuth();
   const GoogleProvider = new GoogleAuthProvider();
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        router.push(`/mypage/${user?.id}`)
-      } else {
-        return;
-      }
-    })
-  }, [])
-
   const onClickSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        router.push(`/mypage/${user?.id}`);
+      .then(() => {
+        router.push("/loading/loading2");
       })
       .catch((error) => {
+        toast.error("ログインできません");
         console.log(error);
       });
   };
@@ -86,6 +74,14 @@ const Signin = () => {
             >
               <FcGoogle className="w-10 h-9 rounded-lg" />
               Sign in with Google
+            </button>
+          </div>
+          <div className="w-3/4 lg:w-1/2 h-15">
+            <button
+              className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
+              onClick={() => router.push("/signup")}
+            >
+              Create new account?
             </button>
           </div>
         </div>

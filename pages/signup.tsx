@@ -6,25 +6,17 @@ import {
   signInWithRedirect,
 } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { useRouter } from "next/router";
-import { Auth } from "../firebase/auth";
-import { useRecoilState } from "recoil";
-import { userState } from "../src/recoil/userState";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useRecoilState(userState);
   const auth = getAuth();
   const router = useRouter();
   const GoogleProvider = new GoogleAuthProvider();
-  const { getAuthState } = Auth({auth, user, setUser});
-
-  useEffect(() => {
-    getAuthState();
-  }, [auth])
 
   const onClickSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
@@ -38,8 +30,27 @@ const Signup = () => {
             query: { id: id, nickname: name },
           });
         })
-        .catch((error) => {});
+        .catch((error) => {
+          switch (error.code) {
+            case "auth/missing-email":
+              toast.warning("メールアドレスが間違っています");
+              break;
+            case "auth/invalid-email":
+              toast.warning("メールアドレスが間違っています");
+              break;
+            case "auth/email-already-in-use":
+              toast.warning("メールアドレスは登録済みです");
+              break;
+            default:
+              toast.error("アカウントを作成できません");
+              break;
+          }
+          console.log(error);
+        });
     } else if (password.length < 8) {
+      toast.warning("パスワードは８文字以上です");
+    } else if (name === "") {
+      toast.warning("ニックネームを入力してください");
     }
   };
 
@@ -96,6 +107,14 @@ const Signup = () => {
           >
             <FcGoogle className="w-10 h-9 rounded-lg" />
             Sign in with Google
+          </button>
+        </div>
+        <div className="w-3/4 h-15">
+          <button
+            className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
+            onClick={() => router.push("/signin")}
+          >
+            Already have your account?
           </button>
         </div>
       </div>

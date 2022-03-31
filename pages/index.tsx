@@ -16,20 +16,25 @@ import { useRouter } from "next/router";
 import Hamburger from "../components/atoms/Hamburger";
 import { getAuth } from "firebase/auth";
 import { useRecoilState } from "recoil";
-import {
-  moviesState,
-  searchMoviesState,
-} from "../src/recoil/movieState";
+import { moviesState, searchMoviesState } from "../src/recoil/movieState";
 import { Movie } from "../src/types/useMovie";
+import { Auth } from "../firebase/auth";
+import { userState } from "../src/recoil/userState";
 
 const Home: NextPage = () => {
+  const auth = getAuth();
+  const [user, setUser] = useRecoilState(userState);
+  const { getAuthState } = Auth({ auth, user, setUser });
   const [movies, setMovies] = useRecoilState<Movie[]>(moviesState);
   const [searchMovies, setSearchMovies] =
     useRecoilState<Movie[]>(searchMoviesState);
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
-  const auth = getAuth();
   const [openMenu, setOpenMenu] = useState(false);
+
+  useEffect(() => {
+    getAuthState();
+  }, [auth]);
 
   useEffect(() => {
     const getPopMovies = () => {
@@ -39,24 +44,22 @@ const Home: NextPage = () => {
           const data = result.data.results;
           setPopMovies(data);
           setMovies(data);
-          setSearchMovies([])
+          setSearchMovies([]);
         })
         .catch((error) => {
           console.log(error);
         });
     };
     getPopMovies();
-    console.log(1)
+    console.log(1);
   }, []);
 
   useEffect(() => {
     if (searchMovies && searchMovies.length > 0) {
       setMovies(searchMovies);
     }
-    console.log(3)
-  }, [movies])
-
-  console.log(movies)
+    console.log(3);
+  }, [movies]);
 
   return (
     <div className="h-full relative">
