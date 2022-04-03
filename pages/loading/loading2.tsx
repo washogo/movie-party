@@ -21,7 +21,7 @@ const Loading2 = () => {
   };
 
   return (
-    <div className="bg-Black h-screen">
+    <div className="bg-Black h-screen w-full">
       <Lottie options={defaultOptions} />
     </div>
   );

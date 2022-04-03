@@ -83,11 +83,11 @@ const Movie = () => {
               <p className="text-4xl font-bold text-center text-White border-b-4 border-Black mb-3">
                 {movie.title}
               </p>
-              <div className="lg:grid grid-cols-3 gap-x-2">
+              <div className="xl:grid grid-cols-3 gap-x-2">
                 <div className="col-span-1">
                   <div>
                     <img
-                      className="w-[394px] h-[591px]"
+                      className="w-full h-full"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt="movie sample"
                     />
@@ -151,7 +151,7 @@ const Movie = () => {
                     <div className="grid grid-cols-3 ">
                       <div className="grid grid-rows-2 col-span-1">
                         <p className="font-bold text-lg">監督</p>
-                        <p className="bg-WhiteGray w-2/3 text-center rounded-lg">
+                        <p className="bg-WhiteGray sm:w-2/3 text-center rounded-lg">
                           {director}
                         </p>
                       </div>
@@ -159,14 +159,14 @@ const Movie = () => {
                   </div>
                   <div className="row-span-1">
                     <p className="font-bold text-lg">出演者</p>
-                    <div className="grid grid-cols-4 gap-y-2 gap-x-3">
+                    <div className="lg:grid grid-cols-4 gap-y-2 gap-x-3">
                       {casts.map((cast, index) => {
                         if (index > 7) {
                           return;
                         }
                         return (
                           <p
-                            className="bg-WhiteGray text-center rounded-lg"
+                            className="bg-WhiteGray text-center lg:rounded-lg mb-1"
                             key={cast.id}
                           >
                             {cast.name}

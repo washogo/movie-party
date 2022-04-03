@@ -62,14 +62,14 @@ const Mypage = () => {
   }, [user]);
 
   return (
-    <div className="bg-Black h-full relative pb-32">
+    <div className="bg-Black h-full w-full relative pb-32">
       <Header setSearchMovies={setSearchMovies} />
       {user !== null && authChecked && (
         <div
           className={
             openMenu
-              ? "grid grid-cols-12 grid-rows-3 w-full h-32 bg-WhiteGray opacity-25 pointer-events-none mb-10"
-              : "grid grid-cols-12 grid-rows-3 w-full h-32 bg-WhiteGray mb-10"
+              ? "lg:grid grid-cols-12 grid-rows-3 w-full lg:h-32 bg-WhiteGray opacity-25 pointer-events-none mb-10"
+              : "lg:grid grid-cols-12 grid-rows-3 w-full lg:h-32 bg-WhiteGray mb-10 pl-10"
           }
         >
           <div className="col-start-2 col-span-1">
@@ -79,10 +79,10 @@ const Mypage = () => {
               alt="user image"
             />
           </div>
-          <p className="text-Black text-3xl font-bold col-start-3 col-span-2 row-start-3 row-span-1">
+          <p className="text-Black text-3xl font-bold col-start-3 col-span-2 row-start-3 row-span-1 w-full">
             {user.nickname} Movies
           </p>
-          <p className="text-Black text-xl col-start-10 col-span-1 row-start-3 row-span-1">
+          <p className="text-Black text-xl col-start-10 col-span-2 row-start-3 row-span-1 w-full">
             ID：{user.id}
           </p>
         </div>
@@ -92,29 +92,29 @@ const Mypage = () => {
         className={
           openMenu
             ? reviews.length === 0
-              ? "container mx-20 grid grid-cols-10 opacity-25 pointer-events-none h-screen"
-              : "container mx-20 grid grid-cols-10 opacity-25 pointer-events-none h-full"
+              ? "container lg:grid grid-cols-10 opacity-25 pointer-events-none h-screen"
+              : "container lg:grid grid-cols-10 opacity-25 pointer-events-none h-full"
             : reviews.length === 0
-            ? "container mx-20 grid grid-cols-10 h-screen"
-            : "container mx-20 grid grid-cols-10 h-full"
+            ? "container lg:grid grid-cols-10 h-screen"
+            : "lg:container lg:grid grid-cols-10 h-full w-full"
         }
       >
         {reviews.length > 0 && reviews.map((review) => (
           <>
-            <div key={review.id} className="col-span-5 mx-10 mt-5 bg-WhiteGray">
+            <div key={review.id} className="col-span-5 mt-5 bg-WhiteGray xl:ml-32 lg:ml-20">
               <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
                 {review.movieTitle}
               </p>
               <div className="xl:grid grid-cols-6 w-full">
-                <div className="col-start-1 col-span-3">
+                <div className="col-start-1 col-span-3 w-full">
                   <img
-                    className=" h-[420px] w-[280px]"
+                    className=" h-full w-full"
                     src={`https://image.tmdb.org/t/p/w500/${review.imagePath}`}
                     alt="movie sample1"
                   />
                 </div>
-                <div className="col-start-4 col-span-3 h-80 overflow-scroll">
-                  <div className="flex h-16 border-b-8 border-Black">
+                <div className="col-start-4 col-span-3 h-80 overflow-scroll w-full">
+                  <div className="flex h-16 border-b-8 border-Black w-full">
                     {[...Array(review.evaluation)]
                       .map((_, i) => i)
                       .map((num) => (
@@ -126,10 +126,10 @@ const Mypage = () => {
                         />
                       ))}
                   </div>
-                  <p className="text-xs xl:text-lg">{review.review}</p>
+                  <p className="text-lg lg:text-xl">{review.review}</p>
                 </div>
                 <button
-                  className="col-start-5 col-span-2 bg-Secondary rounded-full w-5/6 h-full hover:bg-Black xl:text-lg font-bold mx-auto"
+                  className="col-start-5 col-span-2 bg-Secondary rounded-full xl:w-5/6 lg:w-5/4 w-1/3 h-full hover:bg-Black xl:text-lg font-bold mx-auto"
                   onClick={() =>
                     router.push({
                       pathname: `/reviews/${review.id}/edit`,

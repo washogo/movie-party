@@ -3,8 +3,7 @@ import { getAuth } from "firebase/auth";
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
-import { BsFillStarFill, BsStars } from "react-icons/bs";
+import { BsFillStarFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Hamburger from "../../../components/atoms/Hamburger";
@@ -137,7 +136,7 @@ const Edit = () => {
             <div className="col-span-1">
               <div>
                 <img
-                  className="w-[394px] h-[591px]"
+                  className="w-full h-full"
                   src={`https://image.tmdb.org/t/p/w500/${review?.imagePath}`}
                   alt="movie sample1"
                 />
@@ -152,7 +151,7 @@ const Edit = () => {
                   Evaluation
                 </label>
                 <br />
-                <div className="w-1/2 h-1/2 flex mx-auto">
+                <div className="flex justify-center">
                   {[...Array(5)]
                     .map((_, i) => i + 1)
                     .map((num) =>

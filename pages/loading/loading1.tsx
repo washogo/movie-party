@@ -24,8 +24,8 @@ const Loading1 = () => {
   };
 
   return (
-    <div className="bg-Black">
-      <Lottie options={defaultOptions} height="100vh" width="100vh" />
+    <div className="bg-Black w-full h-screen">
+      <Lottie options={defaultOptions} />
     </div>
   );
 };

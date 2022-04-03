@@ -38,45 +38,44 @@ const Hamburger = (props: Props) => {
         className={
           openMenu
             ? "w-0 h-0 opacity-0"
-            : "w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10  rounded-lg"
+            : "w-1/12 h-8 xl:h-16 lg:h-14 md:h-12 sm:h-10 rounded-lg"
         }
         onClick={() => menuFunction()}
       />
       <div
         className={
           openMenu
-            ? "w-1/3 h-screen opacity-100 absolute top-1 left-0 bg-black text-White rounded-lg"
+            ? "w-full h-full opacity-100 absolute top-1 left-0 bg-black text-White rounded-lg"
             : "w-0 h-0 opacity-0 bg-Black text-White transition-transform"
         }
-        onClick={() => menuFunction()}
       >
         <ul>
           <div onClick={() => menuFunction()}>
-            <p className="text-5xl font-bold"> Close</p>
+            <p className="text-3xl md:text-4xl lg:text-5xl font-bold"> Close</p>
           </div>
           <li className="mt-14 ml-16">
             <Link href="/">
               <a>
-                <p className="text-6xl font-bold">TOP</p>
+                <p className="text-4xl md:text-5xl lg:text-6xl font-bold">TOP</p>
               </a>
             </Link>
           </li>
           <li className="mt-14 ml-16">
             <Link href={`/mypage/${user?.id}`}>
               <a>
-                <p className="text-6xl font-bold">MyPage</p>
+                <p className="text-4xl md:text-5xl lg:text-6xl font-bold">MyPage</p>
               </a>
             </Link>
           </li>
           <li className="mt-14 ml-16 cursor-pointer" onClick={logOut}>
             <a>
-              <p className="text-6xl font-bold">LogOut</p>
+              <p className="text-4xl md:text-5xl lg:text-6xl font-bold">LogOut</p>
             </a>
           </li>
           <li className="mt-14 ml-16">
             <Link href="/signup">
               <a>
-                <p className="text-6xl font-bold">SignUp</p>
+                <p className="text-4xl md:text-5xl lg:text-6xl font-bold">SignUp</p>
               </a>
             </Link>
           </li>

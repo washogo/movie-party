@@ -4,14 +4,12 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsFillStarFill, BsStars } from "react-icons/bs";
-import { FaHamburger } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { db } from "../../firebase/firebase";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
 import {
-  moviesState,
   movieState,
   searchMoviesState,
 } from "../../src/recoil/movieState";
@@ -90,7 +88,7 @@ const Create = () => {
               <div className="col-span-1">
                 <div>
                   <img
-                    className="w-[394px] h-[591px]"
+                    className="w-full h-full"
                     src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                     alt="movie sample"
                   />
@@ -114,7 +112,7 @@ const Create = () => {
                     Evaluation
                   </label>
                   <br />
-                  <div className="w-1/2 h-1/2 flex mx-auto">
+                  <div className="flex justify-center">
                     {[...Array(5)]
                       .map((_, i) => i + 1)
                       .map((num) =>

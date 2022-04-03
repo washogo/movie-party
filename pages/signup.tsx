@@ -61,33 +61,33 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black pb-20">
-      <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 my-10 pb-8 bg-Gray">
-        <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">
+    <div className="flex flex-col items-center justify-end h-full w-full bg-Black shadow border border-Black pb-40">
+      <div className="w-full sm:w-1/2 flex flex-col space-y-6 items-center justify-start my-20 pb-8 bg-Gray">
+        <p className="w-full h-full lg:text-5xl text-5xl font-bold text-center text-Black p-5">
           Sign up
         </p>
-        <div className="w-full pl-6">
+        <div className="w-3/4 xl:px-5">
           <p className="text-xl font-bold text-Black">NickName</p>
           <input
             type="text"
-            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="w-full pl-6">
+        <div className="w-3/4 xl:px-5">
           <p className="text-xl font-bold text-Black">Email</p>
           <input
             type="email"
-            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="w-full pl-6">
+        <div className="w-3/4 xl-px-5">
           <p className="text-xl font-bold text-Black">Password</p>
           <input
             type="password"
-            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -102,7 +102,7 @@ const Signup = () => {
         </div>
         <div className="w-3/4 lg:w-1/2 h-15">
           <button
-            className="flex space-x-0.5 items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
+            className="flex space-x-0.5 justify-center items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
             onClick={onClickGoogleSignUp}
           >
             <FcGoogle className="w-10 h-9 rounded-lg" />

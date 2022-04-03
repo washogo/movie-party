@@ -32,8 +32,8 @@ const Loading3 = () => {
   };
 
   return (
-    <div className="bg-Black">
-      <Lottie options={defaultOptions} height="100vh" width="100vh" />
+    <div className="bg-Black h-screen w-full">
+      <Lottie options={defaultOptions} />
     </div>
   );
 };

@@ -33,9 +33,7 @@ export const Header = (props: Props) => {
         const data = response.data.results;
         setSearchMovies!(data);
         setIsLoading(false);
-        if (data.length > 0) {
-          toast.success("映画が見つかりました");
-        } else {
+        if (data.length < 0) {
           toast.error("映画が見つかりませんでした");
         }
       })
@@ -67,7 +65,7 @@ export const Header = (props: Props) => {
             />
           </label>
           <input
-            className="bg-WhiteGray outline-none w-full col-span-8 text-md h-4 xl:h-8 md:h-6"
+            className="bg-WhiteGray outline-none w-full col-span-8 text-[10px] sm:text-sm lg:text-lg xl:h-8 md:h-6 h-4 p-2"
             type="text"
             id="search"
             placeholder="Input the title of movie"
@@ -75,7 +73,7 @@ export const Header = (props: Props) => {
             onChange={(e) => setSearch(e.target.value)}
           ></input>
           <button
-            className="col-span-1 text-3xl font-bold"
+            className="col-span-1 text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold"
             onClick={() => {
               setSearchMovies!([]);
             }}

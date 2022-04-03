@@ -1,11 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { fileURLToPath, urlToHttpOptions } from "url";
 import { db } from "../firebase/firebase";
 import { userState } from "../src/recoil/userState";
 
@@ -53,13 +51,13 @@ const Registration = () => {
   console.log(imageUrl)
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-Black shadow">
-      <div className="h-5/6 flex flex-col space-y-2 items-center justify-start px-14 bg-Gray">
-        <p className="basis-20 text-5xl font-bold text-center text-Black p-5">
+    <div className="sm:flex flex-col items-center justify-center h-full w-full bg-Black py-40">
+      <div className="h-full flex flex-col space-y-2 items-center justify-start px-14 bg-Gray">
+        <p className="basis-5/6 text-5xl font-bold text-center text-Black p-5">
           Your Info
         </p>
-        <div className="w-full pl-6 basis-20">
-          <p className="text-xl font-bold text-Black">ID</p>
+        <div className="w-full pl-6 basis-5/6">
+          <p className="text-xl font-bold text-Black w-full">ID</p>
           <input
             type="text"
             className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
@@ -67,16 +65,14 @@ const Registration = () => {
             onChange={(e) => setId(e.target.value)}
           />
         </div>
-        <div className="w-full pl-6">
+        <div className="w-full pl-6 basis-5/6">
           <p className="text-xl font-bold text-Black">Your Image</p>
-          <input type="file" className="text-lg mt-3" onChange={(e) => getImageUrl(e)} />
+          <input type="file" className="w-full text-lg mt-3" onChange={(e) => getImageUrl(e)} />
         </div>
-        <div className="flex flex-row items-center mt-1 w-full basis-60">
+        <div className="sm:flex flex-row items-center mt-1 w-full basis-5/6">
           <img
             src={previewUrl}
-            width="160px"
-            height="160px"
-            className="basis-5/12 rounded-full bg-White"
+            className="basis-5/12 rounded-full bg-White sm:h-[160px] sm:w-[160px]"
             alt="user image"
           />
 

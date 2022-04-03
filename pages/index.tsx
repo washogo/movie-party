@@ -62,9 +62,9 @@ const Home: NextPage = () => {
   }, [movies]);
 
   return (
-    <div className="h-full relative">
+    <div className="h-full w-full relative">
       <Header setSearchMovies={setSearchMovies} />
-      <div className="bg-Secondary pb-36">
+      <div className="w-full w-full bg-Secondary pb-36">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
         {movies !== null && movies.length > 0 && (
           <div
@@ -74,9 +74,9 @@ const Home: NextPage = () => {
                 : "bg-Secondary w-full"
             }
           >
-            <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl w-[1000px] h-[200px]">
-              <IoIosArrowDropleftCircle className="w-16 h-16 rounded-lg" />
-              <div className="flex items-center space-x-2 overflow-x-auto scroll-smooth w-[900px]">
+            <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl xl:w-[1000px] lg:w-[700px] sm:w-[500px] w-[300px] h-[200px]">
+              <IoIosArrowDropleftCircle className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg" />
+              <div className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px]">
                 {popMovies.map((movie) => (
                   <div key={movie.id}>
                     <img
@@ -87,11 +87,11 @@ const Home: NextPage = () => {
                   </div>
                 ))}
               </div>
-              <IoIosArrowDroprightCircle className="w-16 h-16 rounded-lg" />
+              <IoIosArrowDroprightCircle className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg" />
             </div>
             <div className="flex flex-wrap justify-center">
               {movies.map((movie) => (
-                <div className="items-center w-1/5 mt-10 mr-2" key={movie.id}>
+                <div className="lg:basis-1/4 xl:basis-1/5 md:basis-1/3 basis-1/2 items-center w-1/5 mt-10 mr-2" key={movie.id}>
                   <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
                     <p
                       className="hover:overflow-y-scroll h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black cursor-pointer"
@@ -109,9 +109,7 @@ const Home: NextPage = () => {
                   </div>
                   <div>
                     <img
-                      width="318px"
-                      height="469px"
-                      className="h-[432px] w-[288px]"
+                      className="lg:h-full lg:w-full"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt="no_image"
                     />
