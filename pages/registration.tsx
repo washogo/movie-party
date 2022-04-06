@@ -3,6 +3,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useSetRecoilState } from "recoil";
 import { db } from "../firebase/firebase";
 import { userState } from "../src/recoil/userState";
@@ -38,14 +39,21 @@ const Registration = () => {
     });
   };
 
+  console.log(imageUrl)
+  console.log(id)
+
   const createAccount = () => {
-    setDoc(doc(db, "users", `${uid}`), {
-      id: id,
-      imageUrl: imageUrl,
-      nickname: nickname,
-    });
-    setUser({ id: id, imageUrl: imageUrl, nickname: nickname });
-    router.push("./loading/loading2");
+    if(id !== "" && imageUrl !== "" && nickname !== "") {
+      setDoc(doc(db, "users", `${uid}`), {
+        id: id,
+        imageUrl: imageUrl,
+        nickname: nickname,
+      });
+      setUser({ id: id, imageUrl: imageUrl, nickname: nickname });
+      router.push("./loading/loading2");
+    } 
+    id === "" &&  toast.warning("idが正しくありません")
+   imageUrl === "" && toast.warning("プロフィール画像が正しくありません")
   };
 
   console.log(imageUrl)

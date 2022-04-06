@@ -8,16 +8,21 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { getBlob, getDownloadURL, getStorage, ref } from "firebase/storage";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { Hamburger }from "../../components/atoms/Hamburger";
+import { Hamburger } from "../../components/atoms/Hamburger";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
 import { Auth } from "../../firebase/auth";
 import { db } from "../../firebase/firebase";
-import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
+import {
+  moviesState,
+  movieState,
+  searchMoviesState,
+} from "../../src/recoil/movieState";
 import { userState } from "../../src/recoil/userState";
 import { Movie } from "../../src/types/useMovie";
 import { Review } from "../../src/types/useReview";
@@ -44,19 +49,21 @@ const Mypage = () => {
         where("userId", "==", user?.id)
       );
 
-      await getDocs(q).then((snapshot) => {
-        const arr = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          userId: doc.data().userId,
-          movieTitle: doc.data().movieTitle,
-          imagePath: doc.data().imagePath,
-          evaluation: doc.data().evaluation,
-          review: doc.data().review,
-        }));
-        setReviews(arr);
-      }).catch((error) => {
-        console.log(error);
-      })
+      await getDocs(q)
+        .then((snapshot) => {
+          const arr = snapshot.docs.map((doc) => ({
+            id: doc.id,
+            userId: doc.data().userId,
+            movieTitle: doc.data().movieTitle,
+            imagePath: doc.data().imagePath,
+            evaluation: doc.data().evaluation,
+            review: doc.data().review,
+          }));
+          setReviews(arr);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
     getReviews();
   }, [user]);
@@ -99,50 +106,54 @@ const Mypage = () => {
             : "lg:container lg:grid grid-cols-10 h-full w-full"
         }
       >
-        {reviews.length > 0 && reviews.map((review) => (
-          <>
-            <div key={review.id} className="col-span-5 mt-5 bg-WhiteGray xl:ml-32 lg:ml-20">
-              <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
-                {review.movieTitle}
-              </p>
-              <div className="xl:grid grid-cols-6 w-full">
-                <div className="col-start-1 col-span-3 w-full">
-                  <img
-                    className=" h-full w-full"
-                    src={`https://image.tmdb.org/t/p/w500/${review.imagePath}`}
-                    alt="movie sample1"
-                  />
-                </div>
-                <div className="col-start-4 col-span-3 h-80 overflow-scroll w-full">
-                  <div className="flex h-16 border-b-8 border-Black w-full">
-                    {[...Array(review.evaluation)]
-                      .map((_, i) => i)
-                      .map((num) => (
-                        <BsFillStarFill
-                          key={num}
-                          size="50"
-                          className="text-Warning"
-                          cursor="pointer"
-                        />
-                      ))}
+        {reviews.length > 0 &&
+          reviews.map((review) => (
+            <>
+              <div
+                key={review.id}
+                className="col-span-5 mt-5 bg-WhiteGray xl:ml-32 lg:ml-20"
+              >
+                <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
+                  {review.movieTitle}
+                </p>
+                <div className="xl:grid grid-cols-6 w-full">
+                  <div className="col-start-1 col-span-3 w-full">
+                    <img
+                      className=" h-full w-full"
+                      src={`https://image.tmdb.org/t/p/w500/${review.imagePath}`}
+                      alt="movie sample1"
+                    />
                   </div>
-                  <p className="text-lg lg:text-xl">{review.review}</p>
+                  <div className="col-start-4 col-span-3 h-80 overflow-scroll w-full">
+                    <div className="flex h-16 border-b-8 border-Black w-full">
+                      {[...Array(review.evaluation)]
+                        .map((_, i) => i)
+                        .map((num) => (
+                          <BsFillStarFill
+                            key={num}
+                            size="50"
+                            className="text-Warning"
+                            cursor="pointer"
+                          />
+                        ))}
+                    </div>
+                    <p className="text-lg lg:text-xl">{review.review}</p>
+                  </div>
+                  <button
+                    className="col-start-5 col-span-2 bg-Secondary rounded-full xl:w-5/6 lg:w-5/4 w-1/3 h-full hover:bg-Black xl:text-lg font-bold mx-auto"
+                    onClick={() =>
+                      router.push({
+                        pathname: `/reviews/${review.id}/edit`,
+                        query: { id: review.id },
+                      })
+                    }
+                  >
+                    Edit
+                  </button>
                 </div>
-                <button
-                  className="col-start-5 col-span-2 bg-Secondary rounded-full xl:w-5/6 lg:w-5/4 w-1/3 h-full hover:bg-Black xl:text-lg font-bold mx-auto"
-                  onClick={() =>
-                    router.push({
-                      pathname: `/reviews/${review.id}/edit`,
-                      query: { id: review.id },
-                    })
-                  }
-                >
-                  Edit
-                </button>
               </div>
-            </div>
-          </>
-        ))}
+            </>
+          ))}
       </div>
       <Footer />
     </div>

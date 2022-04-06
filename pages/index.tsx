@@ -13,7 +13,7 @@ import { Footer } from "../components/molecules/Footer";
 import { useEffect, useState } from "react";
 import { requests } from "./api/apiConfig";
 import { useRouter } from "next/router";
-import {Hamburger} from "../components/atoms/Hamburger";
+import { Hamburger } from "../components/atoms/Hamburger";
 import { getAuth } from "firebase/auth";
 import { useRecoilState } from "recoil";
 import { moviesState, searchMoviesState } from "../src/recoil/movieState";
@@ -61,6 +61,16 @@ const Home: NextPage = () => {
     console.log(3);
   }, [movies]);
 
+  const onClickLeftSlide = () => {
+    const movies = document.getElementById("movies");
+    movies?.scrollBy(-2000, 0);
+  };
+
+  const onClickRightSlide = () => {
+    const movies = document.getElementById("movies");
+    movies?.scrollBy(2000, 0);
+  };
+
   return (
     <div className="h-full w-full relative">
       <Header setSearchMovies={setSearchMovies} />
@@ -75,8 +85,14 @@ const Home: NextPage = () => {
             }
           >
             <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl xl:w-[1000px] lg:w-[700px] sm:w-[500px] w-[300px] h-[200px]">
-              <IoIosArrowDropleftCircle className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg" />
-              <div className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px]">
+              <IoIosArrowDropleftCircle
+                className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg"
+                onClick={onClickLeftSlide}
+              />
+              <div
+                id="movies"
+                className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px] transition duration-[20000ms] "
+              >
                 {popMovies.map((movie) => (
                   <div key={movie.id}>
                     <img
@@ -87,11 +103,17 @@ const Home: NextPage = () => {
                   </div>
                 ))}
               </div>
-              <IoIosArrowDroprightCircle className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg" />
+              <IoIosArrowDroprightCircle
+                className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg"
+                onClick={onClickRightSlide}
+              />
             </div>
             <div className="flex flex-wrap justify-center">
               {movies.map((movie) => (
-                <div className="lg:basis-1/4 xl:basis-1/5 md:basis-1/3 basis-1/2 items-center w-1/5 mt-10 mr-2" key={movie.id}>
+                <div
+                  className="lg:basis-1/4 xl:basis-1/5 md:basis-1/3 basis-1/2 items-center w-1/5 mt-10 mr-2"
+                  key={movie.id}
+                >
                   <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
                     <p
                       className="hover:overflow-y-scroll h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black cursor-pointer"
