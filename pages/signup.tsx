@@ -62,7 +62,7 @@ const Signup = () => {
 
   return (
     <div className="flex flex-col items-center justify-end h-full w-full bg-Black shadow border border-Black pb-40">
-      <div className="w-full sm:w-1/2 flex flex-col space-y-6 items-center justify-start my-20 pb-8 bg-Gray">
+      <div className="w-full sm:w-1/2 lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 my-20 pb-8 bg-Gray">
         <p className="w-full h-full lg:text-5xl text-5xl font-bold text-center text-Black p-5">
           Sign up
         </p>
@@ -83,7 +83,7 @@ const Signup = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="w-3/4 xl-px-5">
+        <div className="w-3/4 xl:px-5">
           <p className="text-xl font-bold text-Black">
             Password
             {" "}
