@@ -12,7 +12,7 @@ type Props = {
   setSearchMovies?: (movies: Movie[]) => void;
 };
 
-export const Header = React.memo(function Header (props: Props) {
+export const Header = React.memo(function Header(props: Props) {
   const { setSearchMovies } = props;
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
@@ -24,26 +24,28 @@ export const Header = React.memo(function Header (props: Props) {
   }, [isLoading]);
 
   const searchMovies = async (e: MouseEvent<SVGElement>) => {
-    const url = requests.fetchSearchMovies;
-    setIsLoading(true);
-    router.push({ pathname: "/loading/loading1", query: { url: "/" } });
-    await axios
-      .get(`${url}&query=${search}&page=1&include_adult=false`)
-      .then((response) => {
-        const data = response.data.results;
-        setSearchMovies!(data);
-        setIsLoading(false);
-        if (data.length < 0) {
+    if (search !== "") {
+      const url = requests.fetchSearchMovies;
+      setIsLoading(true);
+      router.push({ pathname: "/loading/loading1", query: { url: "/" } });
+      await axios
+        .get(`${url}&query=${search}&page=1&include_adult=false`)
+        .then((response) => {
+          const data = response.data.results;
+          setSearchMovies!(data);
+          setIsLoading(false);
+          if (data.length === 0) {
+            toast.error("映画が見つかりませんでした");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
           toast.error("映画が見つかりませんでした");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("映画が見つかりませんでした");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
 
   return (
@@ -58,8 +60,8 @@ export const Header = React.memo(function Header (props: Props) {
             <FaSearch
               className={
                 search === ""
-                  ? "w-3 lg:w-8 md:w-5 h-4 xl:h-8 md:h-6 rounded-lg cursor-pointer opacity-25 pointer-events-none"
-                  : "w-3 lg:w-8 md:w-5 h-4 xl:h-8 md:h-6 rounded-lg cursor-pointer opacity-70 hover:opacity-100"
+                  ? "w-3 lg:w-8 md:w-5 h-4 xl:h-8 md:h-6 rounded-lg opacity-25 cursor-not-allowed"
+                  : "w-3 lg:w-8 md:w-5 h-4 xl:h-8 md:h-6 rounded-lg cursor-pointer opacity-70 hover:opacity-100 hover:scale-110 duration-300"
               }
               onClick={searchMovies}
             />
@@ -73,9 +75,10 @@ export const Header = React.memo(function Header (props: Props) {
             onChange={(e) => setSearch(e.target.value)}
           ></input>
           <button
-            className="col-span-1 text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold"
+            className="col-span-1 text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold hover:scale-110 duration-200"
             onClick={() => {
               setSearchMovies!([]);
+              setSearch("");
             }}
           >
             x

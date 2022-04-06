@@ -86,7 +86,7 @@ const Home: NextPage = () => {
           >
             <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl xl:w-[1000px] lg:w-[700px] sm:w-[500px] w-[300px] h-[200px]">
               <IoIosArrowDropleftCircle
-                className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg"
+                className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg hover:cursor-cell hover:scale-110 transition delay-150 duration-300"
                 onClick={onClickLeftSlide}
               />
               <div
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
                 {popMovies.map((movie) => (
                   <div key={movie.id}>
                     <img
-                      className="w-[133px] h-[200px] mr-[20vh]"
+                      className="w-full h-full mr-[20vh]"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt="no_image"
                     />
@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                 ))}
               </div>
               <IoIosArrowDroprightCircle
-                className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg"
+                className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg hover:cursor-cell hover:scale-110 transition delay-150 duration-300"
                 onClick={onClickRightSlide}
               />
             </div>
