@@ -84,7 +84,13 @@ const Signup = () => {
           />
         </div>
         <div className="w-3/4 xl-px-5">
-          <p className="text-xl font-bold text-Black">Password</p>
+          <p className="text-xl font-bold text-Black">
+            Password
+            {" "}
+            <span className="text-sm font-bold text-Black">
+              (at least 8 characters)
+            </span>
+          </p>
           <input
             type="password"
             className="w-full h-10 text-lg p-2 mt-3 rounded-lg"

@@ -5,6 +5,7 @@ import { FaHamburger } from "react-icons/fa";
 import { useRecoilValue } from "recoil";
 import { toast } from "react-toastify"
 import { userState } from "../../src/recoil/userState";
+import React from "react";
 
 
 type Props = {
@@ -13,7 +14,7 @@ type Props = {
   auth: any;
 };
 
-const Hamburger = (props: Props) => {
+export const Hamburger = React.memo(function Hamburger (props: Props) {
   const { openMenu, setOpenMenu, auth } = props;
   const router = useRouter();
   const user = useRecoilValue(userState)
@@ -46,7 +47,7 @@ const Hamburger = (props: Props) => {
         className={
           openMenu
             ? "w-full h-full opacity-100 absolute top-1 left-0 bg-black text-White rounded-lg"
-            : "w-0 h-0 opacity-0 bg-Black text-White transition-transform"
+            : "w-0 h-0 opacity-0 bg-Black text-White transition-transform pointer-events-none"
         }
       >
         <ul>
@@ -83,6 +84,4 @@ const Hamburger = (props: Props) => {
       </div>
     </div>
   );
-};
-
-export default Hamburger;
+});

@@ -13,7 +13,7 @@ import { Footer } from "../components/molecules/Footer";
 import { useEffect, useState } from "react";
 import { requests } from "./api/apiConfig";
 import { useRouter } from "next/router";
-import Hamburger from "../components/atoms/Hamburger";
+import {Hamburger} from "../components/atoms/Hamburger";
 import { getAuth } from "firebase/auth";
 import { useRecoilState } from "recoil";
 import { moviesState, searchMoviesState } from "../src/recoil/movieState";

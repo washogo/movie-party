@@ -1,9 +1,9 @@
 import axios from "../../pages/api/axios";
-import React, { memo, MouseEvent, useEffect, useState, VFC } from "react";
+import React, { MouseEvent, useEffect, useState, VFC } from "react";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { requests } from "../../pages/api/apiConfig";
 import { Movie } from "../../src/types/useMovie";
 import { loadingState } from "../../src/recoil/loadingState";
@@ -12,7 +12,7 @@ type Props = {
   setSearchMovies?: (movies: Movie[]) => void;
 };
 
-export const Header = (props: Props) => {
+export const Header = React.memo(function Header (props: Props) {
   const { setSearchMovies } = props;
   const router = useRouter();
   const [search, setSearch] = useState<string>("");
@@ -84,4 +84,4 @@ export const Header = (props: Props) => {
       </div>
     </div>
   );
-};
+});

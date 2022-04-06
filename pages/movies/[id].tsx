@@ -4,15 +4,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
-import { FaHamburger } from "react-icons/fa";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { toast } from "react-toastify"
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
-import { moviesState, movieState, searchMoviesState } from "../../src/recoil/movieState";
+import { movieState, searchMoviesState } from "../../src/recoil/movieState";
 import { Cast, Genre, Movie } from "../../src/types/useMovie";
 import { API_KEY } from "../api/apiConfig";
-import Hamburger from "../../components/atoms/Hamburger";
+import { Hamburger } from "../../components/atoms/Hamburger";
 import { getAuth } from "firebase/auth";
 import { userState } from "../../src/recoil/userState";
 import { Auth } from "../../firebase/auth";

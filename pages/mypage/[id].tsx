@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import Hamburger from "../../components/atoms/Hamburger";
+import { Hamburger }from "../../components/atoms/Hamburger";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
 import { Auth } from "../../firebase/auth";

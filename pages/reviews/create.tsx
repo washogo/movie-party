@@ -15,7 +15,7 @@ import {
 } from "../../src/recoil/movieState";
 import { userState } from "../../src/recoil/userState";
 import { Movie } from "../../src/types/useMovie";
-import Hamburger from "../../components/atoms/Hamburger";
+import { Hamburger } from "../../components/atoms/Hamburger";
 import { getAuth } from "firebase/auth";
 import { Auth } from "../../firebase/auth";
 
