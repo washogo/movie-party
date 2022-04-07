@@ -46,7 +46,7 @@
 - フレームワーク：React.js, Next.js
 - 状態管理ライブラリ：Recoil
 - CSSフレームワーク：Tailwind CSS
-- Firebase v9：FirebaseAuthentication, CloudFirestore
+- Firebase v9：FirebaseAuthentication, CloudFirestore, Storage
 
 ## その他
 - アイコン素材：ReactIcons
