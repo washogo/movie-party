@@ -1,5 +1,5 @@
 export type User = {
-  id: string;
-  nickname: string | string[] | undefined;
+  userId: string;
+  nickname: string;
   imageUrl: string;
 }

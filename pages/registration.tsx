@@ -1,81 +1,72 @@
 /* eslint-disable @next/next/no-img-element */
+import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useSetRecoilState } from "recoil";
 import { db } from "../firebase/firebase";
 import { userState } from "../src/recoil/userState";
 
 const Registration = () => {
-  const [id, setId] = useState("");
   const [previewUrl, setPreviewUrl] = useState("/nc96424.jpeg");
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
-  const uid = router.query.id;
-  const nickname = router.query.nickname;
+  const { nickname } = router.query;
+  const [name, setName] = useState(nickname)
   const setUser = useSetRecoilState(userState);
-
+  
   const getImageUrl = (e: any) => {
     const imageFile = e.target.files;
     let blob = new Blob(imageFile, { type: "image/jpeg" });
-    const previewUrl = URL.createObjectURL(imageFile[0])
-    setPreviewUrl(previewUrl)
-
+    const previewUrl = URL.createObjectURL(imageFile[0]);
+    setPreviewUrl(previewUrl);
+    
     const S = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQISTUVWXYZ123456789";
     const N = 16;
-    const fileName = Array.from(
-      crypto.getRandomValues(new Uint32Array(N))
-    ).map((n) => S[n%S.length]).join('');
-
+    const fileName = Array.from(crypto.getRandomValues(new Uint32Array(N)))
+    .map((n) => S[n % S.length])
+    .join("");
+    
     const storage = getStorage();
     const storageRef = ref(storage, `${fileName}`);
     // 'file' comes from the Blob or File API
     uploadBytes(storageRef, blob).then((snapshot) => {
       getDownloadURL(ref(storage, `${fileName}`)).then((url) => {
-        setImageUrl(url)
-      })
+        setImageUrl(url);
+      });
     });
   };
-
-  console.log(imageUrl)
-  console.log(id)
-
+  
   const createAccount = () => {
-    if(id !== "" && imageUrl !== "" && nickname !== "") {
+    const { uid } = getAuth().currentUser!;
+    if (nickname !== "") {
       setDoc(doc(db, "users", `${uid}`), {
-        id: id,
         imageUrl: imageUrl,
         nickname: nickname,
       });
-      setUser({ id: id, imageUrl: imageUrl, nickname: nickname });
+      setUser({
+        userId: uid!.toString(),
+        imageUrl: imageUrl,
+        nickname: nickname!.toString(),
+      });
       router.push("./loading/loading2");
-    } 
-    id === "" &&  toast.warning("idが正しくありません")
-   imageUrl === "" && toast.warning("プロフィール画像が正しくありません")
+    }
   };
 
-  console.log(imageUrl)
-
   return (
-    <div className="sm:flex flex-col items-center justify-center h-full w-full bg-Black py-40">
-      <div className="h-full flex flex-col space-y-2 items-center justify-start px-14 bg-Gray">
+    <div className="sm:flex flex items-center justify-center h-screen bg-Black">
+      <div className="h-2/3 bg-Gray p-14">
         <p className="basis-5/6 text-5xl font-bold text-center text-Black p-5">
           Your Info
         </p>
         <div className="w-full pl-6 basis-5/6">
-          <p className="text-xl font-bold text-Black w-full">ID</p>
-          <input
-            type="text"
-            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-          />
-        </div>
-        <div className="w-full pl-6 basis-5/6">
           <p className="text-xl font-bold text-Black">Your Image</p>
-          <input type="file" className="w-full text-lg mt-3" onChange={(e) => getImageUrl(e)} />
+          <input
+            type="file"
+            className="w-full text-lg mt-3"
+            onChange={(e) => getImageUrl(e)}
+          />
         </div>
         <div className="sm:flex flex-row items-center mt-1 w-full basis-5/6">
           <img
@@ -85,10 +76,15 @@ const Registration = () => {
           />
 
           <div className="basis-7/12 ml-5 h-12 rounded-lg bg-White text-3xl font-bold text-center p-1">
-            {nickname}
+          <input
+            type="text"
+            value={name}
+            className="h-full w-full text-xl outline-0"
+            onChange={(e) => setName(e.target.value)}
+          />
           </div>
         </div>
-        <div className="w-2/3 h-20 p-2">
+        <div className="w-2/3 h-20 p-2 mx-auto">
           <button
             className="h-full w-full text-xl font-bold text-center text-Black bg-Primary rounded-full p-2"
             onClick={createAccount}

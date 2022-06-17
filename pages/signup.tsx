@@ -23,11 +23,10 @@ const Signup = () => {
     if (password.length >= 8 && name !== "") {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          const user = userCredential.user;
-          const id = user.uid;
+          const { uid } = userCredential.user
           router.push({
             pathname: "/registration",
-            query: { id: id, nickname: name },
+            query: { uid: uid, nickname: name },
           });
         })
         .catch((error) => {
