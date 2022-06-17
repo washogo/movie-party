@@ -62,13 +62,22 @@ const Home: NextPage = () => {
   }, [movies]);
 
   const onClickLeftSlide = () => {
-    const movies = document.getElementById("movies");
-    movies?.scrollBy(-2000, 0);
+    const movie = document.getElementById("movie-1")
+    const movieWidth = movie!.clientWidth
+    const scrollRange = Number(movieWidth * -5)
+    console.log(scrollRange)
+    const movies = document.getElementById("movies")
+    movies!.scrollBy(scrollRange, 0);
   };
 
   const onClickRightSlide = () => {
-    const movies = document.getElementById("movies");
-    movies?.scrollBy(2000, 0);
+    const movie = document.getElementById("movie-1")
+    console.log(movie)
+    const movieWidth = movie!.clientWidth
+    const scrollRange = Number(movieWidth * 5)
+    const movies = document.getElementById("movies")
+    console.log(scrollRange)
+    movies!.scrollBy(scrollRange, 0);
   };
 
   return (
@@ -91,16 +100,16 @@ const Home: NextPage = () => {
               />
               <div
                 id="movies"
-                className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px] transition duration-[20000ms] "
+                className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px] transition duration-[20000ms] h-full"
               >
-                {popMovies.map((movie) => (
-                  <div key={movie.id}>
+                {popMovies.map((movie, index) => (
                     <img
-                      className="w-full h-full mr-[20vh]"
+                      id={`movie-${index.toString()}`}
+                      key={movie.id}
+                      className="w-full h-full object-contain"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt="no_image"
                     />
-                  </div>
                 ))}
               </div>
               <IoIosArrowDroprightCircle
