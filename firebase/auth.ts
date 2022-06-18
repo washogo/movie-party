@@ -22,12 +22,12 @@ export const Auth = (props: Props) => {
           const docSnap = await getDoc(docRef);
           const data = docSnap.data();
           if (
-            user?.id !== data?.id ||
+            user?.userId !== data?.userId ||
             user?.nickname !== data?.nickname ||
             user?.imageUrl !== data?.imageUrl
           ) {
             setUser({
-              id: data?.id,
+              userId: data?.userId,
               nickname: data?.nickname,
               imageUrl: data?.imageUrl,
             });

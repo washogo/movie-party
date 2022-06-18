@@ -31,44 +31,43 @@ const Home: NextPage = () => {
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
+  
+  const getPopMovies = () => {
+    axios
+      .get(requests.fetchPopular)
+      .then((result) => {
+        const data = result.data.results;
+        setPopMovies(data);
+        setMovies(data);
+        setSearchMovies([]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     getAuthState();
-  }, [auth]);
-
-  useEffect(() => {
-    const getPopMovies = () => {
-      axios
-        .get(requests.fetchPopular)
-        .then((result) => {
-          const data = result.data.results;
-          setPopMovies(data);
-          setMovies(data);
-          setSearchMovies([]);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
     getPopMovies();
-    console.log(1);
-  }, []);
-
-  useEffect(() => {
     if (searchMovies && searchMovies.length > 0) {
       setMovies(searchMovies);
     }
-    console.log(3);
-  }, [movies]);
+  }, [auth, movies]);
 
   const onClickLeftSlide = () => {
-    const movies = document.getElementById("movies");
-    movies?.scrollBy(-2000, 0);
+    const movie = document.getElementById("movie-1")
+    const movieWidth = movie!.clientWidth
+    const scrollRange = Number(movieWidth * -5)
+    const movies = document.getElementById("movies")
+    movies!.scrollBy(scrollRange, 0);
   };
 
   const onClickRightSlide = () => {
-    const movies = document.getElementById("movies");
-    movies?.scrollBy(2000, 0);
+    const movie = document.getElementById("movie-1")
+    const movieWidth = movie!.clientWidth
+    const scrollRange = Number(movieWidth * 5)
+    const movies = document.getElementById("movies")
+    movies!.scrollBy(scrollRange, 0);
   };
 
   return (
@@ -91,16 +90,16 @@ const Home: NextPage = () => {
               />
               <div
                 id="movies"
-                className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px] transition duration-[20000ms] "
+                className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px] transition duration-[20000ms] h-full"
               >
-                {popMovies.map((movie) => (
-                  <div key={movie.id}>
+                {popMovies.map((movie, index) => (
                     <img
-                      className="w-full h-full mr-[20vh]"
+                      id={`movie-${index.toString()}`}
+                      key={movie.id}
+                      className="w-full h-full object-contain"
                       src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                       alt="no_image"
                     />
-                  </div>
                 ))}
               </div>
               <IoIosArrowDroprightCircle
