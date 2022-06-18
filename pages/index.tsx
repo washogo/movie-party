@@ -31,52 +31,42 @@ const Home: NextPage = () => {
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
+  
+  const getPopMovies = () => {
+    axios
+      .get(requests.fetchPopular)
+      .then((result) => {
+        const data = result.data.results;
+        setPopMovies(data);
+        setMovies(data);
+        setSearchMovies([]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     getAuthState();
-  }, [auth]);
-
-  useEffect(() => {
-    const getPopMovies = () => {
-      axios
-        .get(requests.fetchPopular)
-        .then((result) => {
-          const data = result.data.results;
-          setPopMovies(data);
-          setMovies(data);
-          setSearchMovies([]);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
     getPopMovies();
-    console.log(1);
-  }, []);
-
-  useEffect(() => {
     if (searchMovies && searchMovies.length > 0) {
       setMovies(searchMovies);
     }
-    console.log(3);
-  }, [movies]);
+  }, [auth, movies]);
 
   const onClickLeftSlide = () => {
     const movie = document.getElementById("movie-1")
     const movieWidth = movie!.clientWidth
     const scrollRange = Number(movieWidth * -5)
-    console.log(scrollRange)
     const movies = document.getElementById("movies")
     movies!.scrollBy(scrollRange, 0);
   };
 
   const onClickRightSlide = () => {
     const movie = document.getElementById("movie-1")
-    console.log(movie)
     const movieWidth = movie!.clientWidth
     const scrollRange = Number(movieWidth * 5)
     const movies = document.getElementById("movies")
-    console.log(scrollRange)
     movies!.scrollBy(scrollRange, 0);
   };
 
