@@ -14,7 +14,7 @@ const Loading3 = () => {
       .then((result) => {
         router.push({
           pathname: "/registration",
-          query: { nickname: result?.user.displayName },
+          query: { nickname: result!.user.displayName },
         });
       })
       .catch((error) => {
