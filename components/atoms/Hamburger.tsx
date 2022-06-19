@@ -62,7 +62,7 @@ export const Hamburger = React.memo(function Hamburger (props: Props) {
             </Link>
           </li>
           <li className="mt-14 ml-16">
-            <Link href={`/mypage/${user?.id}`}>
+            <Link href={`/mypage/${user?.userId}`}>
               <a>
                 <p className="text-4xl md:text-5xl lg:text-6xl font-bold">MyPage</p>
               </a>

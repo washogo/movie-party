@@ -38,7 +38,7 @@ const Create = () => {
 
   const onClickCreate = async () => {
     await addDoc(collection(db, "reviews"), {
-      userId: user?.id,
+      userId: user?.userId,
       movieTitle: movie?.title,
       imagePath: movie?.poster_path,
       evaluation,

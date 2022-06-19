@@ -30,7 +30,7 @@ const Edit = () => {
   const [evaluation, setEvaluation] = useState(0);
   const [content, setContent] = useState("");
   const [isClicked, setIsClicked] = useState(true);
-  const mypagePath = `/mypage/${user?.id}`;
+  const mypagePath = `/mypage/${user?.userId}`;
 
   useEffect(() => {
     getAuthState();

@@ -46,7 +46,7 @@ const Mypage = () => {
     const getReviews = async () => {
       const q = query(
         collection(db, "reviews"),
-        where("userId", "==", user?.id)
+        where("userId", "==", user?.userId)
       );
 
       await getDocs(q)
@@ -90,7 +90,7 @@ const Mypage = () => {
             {user.nickname} Movies
           </p>
           <p className="text-Black text-xl col-start-10 col-span-2 row-start-3 row-span-1 w-full">
-            ID：{user.id}
+            ID：{user.userId}
           </p>
         </div>
       )}
