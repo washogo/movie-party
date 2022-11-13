@@ -1,6 +1,5 @@
 import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BsFillStarFill } from "react-icons/bs";
@@ -21,14 +20,13 @@ const MyPage = () => {
   const router = useRouter();
   const [user, setUser] = useRecoilState(userState);
   const [reviews, setReviews] = useState<Array<Review>>([]);
-  const [authChecked, setAuthChecked] = useState(false);
   const { getAuthState } = Auth({ auth, user, setUser });
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   useEffect(() => {
     getAuthState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [auth]);
 
   useEffect(() => {
     const getReviews = async () => {
@@ -55,9 +53,9 @@ const MyPage = () => {
     };
     getReviews();
   }, [user]);
-  console.log(user);
+
   return (
-    user.imageUrl !== undefined && (
+    user !== null && (
       <>
         <Header setSearchMovies={setSearchMovies} />
         <div className="bg-Black flex flex-col min-h-screen pt-32">
@@ -114,7 +112,6 @@ const MyPage = () => {
                         alt="movie sample1"
                       />
                     </div>
-                    {/* <div className="w-full col-start-4 col-span-3"> */}
                     <div className="flex h-16 border-b-8 border-Black w-full col-start-4 col-span-3 row-span-1">
                       {[...Array(review.evaluation)]
                         .map((_, i) => i)
@@ -127,7 +124,6 @@ const MyPage = () => {
                           />
                         ))}
                     </div>
-                    {/* <div className="grid grid-rows-6 grid-cols-5"> */}
                     <p className="text-lg lg:text-xl col-start-4 col-span-3 row-start-2 row-span-3">
                       {review.review}
                     </p>
@@ -144,8 +140,6 @@ const MyPage = () => {
                         Edit
                       </button>
                     </div>
-                    {/* </div> */}
-                    {/* </div> */}
                   </div>
                 </div>
               ))}
