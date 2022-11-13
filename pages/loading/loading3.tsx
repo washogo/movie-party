@@ -12,14 +12,17 @@ const Loading3 = () => {
   useEffect(() => {
     getRedirectResult(auth)
       .then((result) => {
+        if (!result) return
         router.push({
           pathname: "/registration",
-          query: { nickname: result!.user.displayName },
+          query: { nickname: result.user.displayName, email: result.user.email },
         });
       })
       .catch((error) => {
+        console.log(error)
         router.push("/signup");
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   const defaultOptions = {

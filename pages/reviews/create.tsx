@@ -32,15 +32,23 @@ const Create = () => {
   const [isClicked, setIsClicked] = useState(true);
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
+  console.log('user', user)
+
   useEffect(() => {
     getAuthState();
-  }, [auth]);
+  }, []);
 
   const onClickCreate = async () => {
+    if (!movie || !user) return;
+    console.log(movie.title)
+    console.log(movie.poster_path)
+    console.log(user.userId)
+    console.log(evaluation)
+    console.log(review)
     await addDoc(collection(db, "reviews"), {
-      userId: user?.userId,
-      movieTitle: movie?.title,
-      imagePath: movie?.poster_path,
+      userId: user.userId,
+      movieTitle: movie.title,
+      imagePath: movie.poster_path,
       evaluation,
       review,
     });
@@ -76,7 +84,7 @@ const Create = () => {
 
   return (
     movie !== null && (
-      <div className="bg-Primary h-full relative pb-32">
+      <div className="bg-Primary h-screen relative pb-32">
         <Header setSearchMovies={setSearchMovies} />
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
         <div className="grid grid-cols-12">

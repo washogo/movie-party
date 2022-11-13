@@ -35,58 +35,56 @@ const Signin = () => {
   };
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-end h-full bg-Black shadow border border-Black pb-40">
-        <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 pb-8 my-20 bg-Primary">
-          <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">
+    <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black pb-40">
+      <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 pb-8 my-20 bg-Primary">
+        <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">
+          Sign in
+        </p>
+        <div className="w-full pl-6">
+          <p className="text-xl font-bold text-Black">Email</p>
+          <input
+            type="email"
+            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="w-full pl-6">
+          <p className="text-xl font-bold text-Black">Password</p>
+          <input
+            type="password"
+            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="w-3/4 lg:w-1/2 h-15">
+          <button
+            className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Gray rounded-full p-2"
+            onClick={onClickSignIn}
+          >
             Sign in
-          </p>
-          <div className="w-full pl-6">
-            <p className="text-xl font-bold text-Black">Email</p>
-            <input
-              type="email"
-              className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="w-full pl-6">
-            <p className="text-xl font-bold text-Black">Password</p>
-            <input
-              type="password"
-              className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="w-3/4 lg:w-1/2 h-15">
-            <button
-              className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Gray rounded-full p-2"
-              onClick={onClickSignIn}
-            >
-              Sign in
-            </button>
-          </div>
-          <div className="w-3/4 lg:w-1/2 h-15">
-            <button
-              className="flex space-x-0.5 items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
-              onClick={onClickGoogleSignUp}
-            >
-              <FcGoogle className="w-10 h-9 rounded-lg" />
-              Sign in with Google
-            </button>
-          </div>
-          <div className="w-3/4 lg:w-1/2 h-15">
-            <button
-              className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
-              onClick={() => router.push("/signup")}
-            >
-              Create new account?
-            </button>
-          </div>
+          </button>
+        </div>
+        <div className="lg:w-1/2 h-15">
+          <button
+            className="flex justify-center items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
+            onClick={onClickGoogleSignUp}
+          >
+            <FcGoogle className="w-6 h-6 lg:w-10 lg:h-9rounded-lg" />
+            Sign in with Google
+          </button>
+        </div>
+        <div className="w-3/4 lg:w-1/2 h-15">
+          <button
+            className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
+            onClick={() => router.push("/signup")}
+          >
+            Create new account?
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

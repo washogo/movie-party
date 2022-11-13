@@ -52,6 +52,7 @@ const Home: NextPage = () => {
     if (searchMovies && searchMovies.length > 0) {
       setMovies(searchMovies);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth, movies]);
 
   const onClickLeftSlide = () => {
@@ -115,7 +116,7 @@ const Home: NextPage = () => {
                 >
                   <div className="w-full h-14 xl:h-16 lg:h-14 md:h-12 sm:h-10">
                     <p
-                      className="hover:overflow-y-scroll h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black cursor-pointer"
+                      className="h-full p-2 text-xs xl:text-lg lg:text-sm md:text-xs sm:text-xs font-bold text-White bg-Black cursor-pointer"
                       onClick={() => {
                         router.push({
                           pathname: `/movies/${movie.id}`,
@@ -135,13 +136,13 @@ const Home: NextPage = () => {
                       alt="no_image"
                     />
                   </div>
-                  <div className="w-full grid grid-cols-6 gap-2 content-center">
+                  <div className="w-full grid grid-cols-6 gap-1 content-center">
                     <AiFillEye className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
-                    <p className="overflow-x-auto w-full text-xs xl:text-xl lg:text-lg md:text-md sm:text-sm font-bold text-center text-White">
+                    <p className="w-full text-xs xl:text-xl lg:text-lg md:text-md font-bold text-center text-White">
                       {movie.vote_count}
                     </p>
                     <BsStars className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />
-                    <p className="overflow-x-auto w-full text-xs xl:text-xl lg:text-lg md:text-md sm:text-sm font-bold text-center text-White">
+                    <p className="w-full text-xs xl:text-xl lg:text-lg md:text-md font-bold text-center text-White">
                       {Math.floor(movie.popularity / 1000)}K
                     </p>
                     <AiOutlineEye className="w-full xl:h-8 lg:h-7 md:h-6 sm:h-5 rounded-lg" />

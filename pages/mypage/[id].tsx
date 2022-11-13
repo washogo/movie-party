@@ -37,6 +37,8 @@ const Mypage = () => {
   const { getAuthState } = Auth({ auth, user, setUser });
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
+  console.log('user', user)
+
   useEffect(() => {
     getAuthState();
     setAuthChecked(true);

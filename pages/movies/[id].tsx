@@ -32,6 +32,8 @@ const Movie = () => {
     getAuthState();
   }, [auth]);
 
+  console.log('user', user)
+
   useEffect(() => {
     const getDetail = async () => {
       await axios

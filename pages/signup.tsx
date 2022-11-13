@@ -60,7 +60,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-end h-full w-full bg-Black shadow border border-Black pb-40">
+    <div className="flex flex-col items-center justify-end h-screen w-full bg-Black shadow border border-Black pb-40">
       <div className="w-full sm:w-1/2 lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 my-20 pb-8 bg-Gray">
         <p className="w-full h-full lg:text-5xl text-5xl font-bold text-center text-Black p-5">
           Sign up
@@ -97,7 +97,7 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="w-3/4 lg:w-1/2 h-15">
+        <div className="w-3/4 xl:w-1/2 h-15">
           <button
             className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Primary rounded-full p-2"
             onClick={onClickSignUp}
@@ -105,16 +105,16 @@ const Signup = () => {
             Sign Up
           </button>
         </div>
-        <div className="w-3/4 lg:w-1/2 h-15">
-          <button
-            className="flex space-x-0.5 justify-center items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
+        <div className="w-4/5 xl:w-1/2 h-15">
+        <button
+            className="flex justify-center items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
             onClick={onClickGoogleSignUp}
           >
-            <FcGoogle className="w-10 h-9 rounded-lg" />
+            <FcGoogle className="w-6 h-6 lg:w-10 lg:h-9rounded-lg" />
             Sign in with Google
           </button>
         </div>
-        <div className="w-3/4 h-15">
+        <div className="h-15">
           <button
             className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
             onClick={() => router.push("/signin")}
