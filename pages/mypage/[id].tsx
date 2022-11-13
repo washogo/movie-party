@@ -106,6 +106,7 @@ const MyPage = () => {
                   </p>
                   <div className="grid grid-rows-6 grid-cols-6">
                     <div className="w-full col-span-3 row-span-full">
+                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         className="object-contain"
                         src={`https://image.tmdb.org/t/p/w500/${review.imagePath}`}
