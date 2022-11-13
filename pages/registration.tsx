@@ -9,7 +9,7 @@ import { db } from "../firebase/firebase";
 import { userState } from "../src/recoil/userState";
 
 const Registration = () => {
-  const [previewUrl, setPreviewUrl] = useState("/nc96424.jpeg");
+  const [previewUrl, setPreviewUrl] = useState("/no_image.jpeg");
   const [imageUrl, setImageUrl] = useState("");
   const router = useRouter();
   const { nickname, email } = router.query;

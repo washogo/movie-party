@@ -23,7 +23,7 @@ const Signup = () => {
     if (password.length >= 8 && name !== "") {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          const { uid } = userCredential.user
+          const { uid } = userCredential.user;
           router.push({
             pathname: "/registration",
             query: { uid: uid, nickname: name },
@@ -84,8 +84,7 @@ const Signup = () => {
         </div>
         <div className="w-3/4 xl:px-5">
           <p className="text-xl font-bold text-Black">
-            Password
-            {" "}
+            Password{" "}
             <span className="text-sm font-bold text-Black">
               (at least 8 characters)
             </span>
@@ -105,8 +104,8 @@ const Signup = () => {
             Sign Up
           </button>
         </div>
-        <div className="w-4/5 xl:w-1/2 h-15">
-        <button
+        <div className="w-4/5 h-15">
+          <button
             className="flex justify-center items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
             onClick={onClickGoogleSignUp}
           >

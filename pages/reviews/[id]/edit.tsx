@@ -31,9 +31,10 @@ const Edit = () => {
   const [content, setContent] = useState("");
   const [isClicked, setIsClicked] = useState(true);
   const mypagePath = `/mypage/${user?.userId}`;
-  console.log(user)
+  
   useEffect(() => {
     getAuthState();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   useEffect(() => {
@@ -63,6 +64,7 @@ const Edit = () => {
         });
     };
     getReview();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const onHoverStar = (num: number) => {
@@ -124,12 +126,13 @@ const Edit = () => {
   };
 
   return (
-    <div className="h-full relative bg-Primary pb-32">
+    <>
       <Header setSearchMovies={setSearchMovies} />
+    <div className="h-full flex flex-col min-h-screen bg-Gray pt-32">
       <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
-      <div className="grid grid-cols-12">
+      <div className="flex-grow grid grid-cols-12">
         <div className="col-start-2 col-span-10">
-          <p className="text-4xl font-bold text-center text-White bg-Gray border-b-4 border-b-Black">
+          <p className="text-4xl font-bold text-center text-White border-b-4 border-b-Black">
             {review?.movieTitle}
           </p>
           <div className="lg:grid grid-cols-3 gap-x-2 mt-3">
@@ -227,6 +230,7 @@ const Edit = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

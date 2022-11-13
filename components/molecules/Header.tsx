@@ -21,6 +21,7 @@ export const Header = React.memo(function Header(props: Props) {
   useEffect(() => {
     isLoading &&
       router.push({ pathname: "/loading/loading1", query: { url: "/" } });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const searchMovies = async (e: MouseEvent<SVGElement>) => {
@@ -33,10 +34,10 @@ export const Header = React.memo(function Header(props: Props) {
         .then((response) => {
           const data = response.data.results;
           setSearchMovies!(data);
-          setIsLoading(false);
           if (data.length === 0) {
             toast.error("映画が見つかりませんでした");
           }
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error(error);
@@ -49,13 +50,13 @@ export const Header = React.memo(function Header(props: Props) {
   };
 
   return (
-    <div className="grid grid-cols-10 pb-3 w-full bg-Black">
+    <div className="grid grid-cols-10 w-full bg-Black fixed">
       <div className="col-span-1"></div>
-      <p className="col-span-5 pt-4 text-2xl xl:text-6xl lg:text-5xl md:text-4xl sm:text-3xl font-bold text-Primary">
+      <p className="col-span-5 pt-4 text-2xl xl:text-6xl lg:text-5xl md:text-4xl sm:text-3xl font-bold text-Primary hover:cursor-pointer" onClick={() => router.push("/")}>
         MOVIE PARTY
       </p>
       <div className="grid grid-rows-2 col-span-3">
-        <div className="bg-WhiteGray row-start-2 grid grid-cols-10 content-center">
+        <div className="bg-WhiteGray row-start-2 grid grid-cols-10 content-center p-2 mb-2">
           <label htmlFor="search" className="col-span-1">
             <FaSearch
               className={
@@ -67,21 +68,21 @@ export const Header = React.memo(function Header(props: Props) {
             />
           </label>
           <input
-            className="bg-WhiteGray outline-none w-full col-span-8 text-[10px] sm:text-sm lg:text-lg xl:h-8 md:h-6 h-4 p-2"
+            className="bg-WhiteGray outline-none w-full col-span-7 text-[10px] sm:text-sm lg:text-lg xl:h-8 md:h-6 h-4 p-2"
             type="text"
             id="search"
             placeholder="Input the title of movie"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-          ></input>
+          />
           <button
-            className="col-span-1 text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold hover:scale-110 duration-200"
+            className="col-span-2 text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold hover:scale-110 duration-200"
             onClick={() => {
               setSearchMovies!([]);
               setSearch("");
             }}
           >
-            x
+            RESET
           </button>
         </div>
       </div>

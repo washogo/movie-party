@@ -31,15 +31,16 @@ const Home: NextPage = () => {
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
-  
+
   const getPopMovies = () => {
     axios
       .get(requests.fetchPopular)
       .then((result) => {
         const data = result.data.results;
         setPopMovies(data);
-        setMovies(data);
-        setSearchMovies([]);
+        if (searchMovies.length === 0 || movies.length === 0) {
+          setMovies(data);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -47,43 +48,44 @@ const Home: NextPage = () => {
   };
 
   useEffect(() => {
-    getAuthState();
     getPopMovies();
-    if (searchMovies && searchMovies.length > 0) {
-      setMovies(searchMovies);
+    getAuthState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
+  useEffect(() => {
+    if (searchMovies.length > 0) {
+      setMovies(searchMovies)
+    } else {
+      getPopMovies();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth, movies]);
+  }, [searchMovies])
 
   const onClickLeftSlide = () => {
-    const movie = document.getElementById("movie-1")
-    const movieWidth = movie!.clientWidth
-    const scrollRange = Number(movieWidth * -5)
-    const movies = document.getElementById("movies")
+    const movie = document.getElementById("movie-1");
+    const movieWidth = movie!.clientWidth;
+    const scrollRange = Number(movieWidth * -5);
+    const movies = document.getElementById("movies");
     movies!.scrollBy(scrollRange, 0);
   };
 
   const onClickRightSlide = () => {
-    const movie = document.getElementById("movie-1")
-    const movieWidth = movie!.clientWidth
-    const scrollRange = Number(movieWidth * 5)
-    const movies = document.getElementById("movies")
+    const movie = document.getElementById("movie-1");
+    const movieWidth = movie!.clientWidth;
+    const scrollRange = Number(movieWidth * 5);
+    const movies = document.getElementById("movies");
     movies!.scrollBy(scrollRange, 0);
   };
 
   return (
-    <div className="h-full w-full relative">
+    <>
       <Header setSearchMovies={setSearchMovies} />
-      <div className="w-full w-full bg-Secondary pb-36">
+    <div className="bg-Black w-full flex flex-col min-h-screen pt-32">
+      <div className="h-full w-full bg-Secondary pb-36 flex-grow">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
         {movies !== null && movies.length > 0 && (
-          <div
-            className={
-              openMenu
-                ? "bg-Secondary w-full opacity-25 pointer-events-none"
-                : "bg-Secondary w-full"
-            }
-          >
+          <div className={openMenu ? "hidden" : ""}>
             <div className="flex items-center bg-Black mt-10 mx-auto rounded-xl xl:w-[1000px] lg:w-[700px] sm:w-[500px] w-[300px] h-[200px]">
               <IoIosArrowDropleftCircle
                 className="w-10 h-10 sm:w-16 sm:h-16 rounded-lg hover:cursor-cell hover:scale-110 transition delay-150 duration-300"
@@ -94,13 +96,13 @@ const Home: NextPage = () => {
                 className="flex items-center space-x-2 overflow-x-auto scroll-smooth xl:w-[900px] lg:w-[600px] sm:w-[400px] w-[200px] transition duration-[20000ms] h-full"
               >
                 {popMovies.map((movie, index) => (
-                    <img
-                      id={`movie-${index.toString()}`}
-                      key={movie.id}
-                      className="w-full h-full object-contain"
-                      src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                      alt="no_image"
-                    />
+                  <img
+                    id={`movie-${index.toString()}`}
+                    key={movie.id}
+                    className="w-full h-full object-contain"
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt="no_image"
+                  />
                 ))}
               </div>
               <IoIosArrowDroprightCircle
@@ -156,6 +158,7 @@ const Home: NextPage = () => {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

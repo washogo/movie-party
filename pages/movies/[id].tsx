@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
 import { BsStars } from "react-icons/bs";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { toast } from "react-toastify"
+import { toast } from "react-toastify";
 import { Footer } from "../../components/molecules/Footer";
 import { Header } from "../../components/molecules/Header";
 import { movieState, searchMoviesState } from "../../src/recoil/movieState";
@@ -30,9 +30,8 @@ const Movie = () => {
 
   useEffect(() => {
     getAuthState();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
-
-  console.log('user', user)
 
   useEffect(() => {
     const getDetail = async () => {
@@ -65,22 +64,20 @@ const Movie = () => {
           setCasts(casts);
         })
         .catch((error) => {
-          toast.error("クレジットが見つかりませんでした")
+          toast.error("クレジットが見つかりませんでした");
         });
     };
     getCredit();
   }, [id]);
 
-  console.log(movie)
-
   return (
-    <div className="bg-Tertiary h-full relative pb-32">
+    <>
       <Header setSearchMovies={setSearchMovies} />
-      <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
-      {movie && director && casts && (
-        <>
-          <div className="grid grid-cols-12">
-            <div className="col-start-2 col-span-10">
+      <div className="bg-Tertiary flex flex-col min-h-screen pt-32">
+        <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
+        {movie && director && casts && (
+          <div className="flex-grow grid grid-cols-12 grid-rows-6">
+            <div className="col-start-2 col-span-10 row-span-5">
               <p className="text-4xl font-bold text-center text-White border-b-4 border-Black mb-3">
                 {movie.title}
               </p>
@@ -179,24 +176,27 @@ const Movie = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-end col-start-5 col-span-7 mt-5">
+            <div className="col-start-10 col-span-2 mt-2">
               <button
-                className="bg-Primary rounded-full hover:bg-Black px-6 mr-5"
+                className="bg-Primary rounded-full hover:bg-Black px-6 mr-5 h-10"
                 onClick={() => {
                   router.push("/reviews/create");
                 }}
               >
                 Review
               </button>
-              <button className="bg-Secondary rounded-full hover:bg-Black px-6" onClick={() => router.push("/")}>
+              <button
+                className="bg-Secondary rounded-full hover:bg-Black px-6 h-10"
+                onClick={() => router.push("/")}
+              >
                 Back
               </button>
             </div>
           </div>
-        </>
-      )}
-      <Footer />
-    </div>
+        )}
+        <Footer />
+      </div>
+    </>
   );
 };
 

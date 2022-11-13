@@ -58,7 +58,7 @@ const Signin = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="w-3/4 lg:w-1/2 h-15">
+        <div className="w-3/4 xl:w-1/2 h-15">
           <button
             className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Gray rounded-full p-2"
             onClick={onClickSignIn}
@@ -66,7 +66,7 @@ const Signin = () => {
             Sign in
           </button>
         </div>
-        <div className="lg:w-1/2 h-15">
+        <div className="w-4/5 h-15">
           <button
             className="flex justify-center items-center h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Secondary rounded-full p-2"
             onClick={onClickGoogleSignUp}

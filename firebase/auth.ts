@@ -14,30 +14,26 @@ export const Auth = (props: Props) => {
   const { auth, user, setUser } = props;
   const router = useRouter();
 
+  const getCorrectUser = async (uid: string) => {
+    const docRef = doc(db, "users", `${uid}`);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
+    if (!data) return
+    setUser({
+      userId: data.userId,
+      imageUrl: data.imageUrl,
+      nickname: data.nickname,
+    });
+  };
+
   const getAuthState = () => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
-        const getCorrectUser = async () => {
-          const docRef = doc(db, "users", `${currentUser.uid}`);
-          const docSnap = await getDoc(docRef);
-          const data = docSnap.data();
-          if (
-            user?.userId !== data?.userId ||
-            user?.nickname !== data?.nickname ||
-            user?.imageUrl !== data?.imageUrl
-          ) {
-            setUser({
-              userId: data?.userId,
-              nickname: data?.nickname,
-              imageUrl: data?.imageUrl,
-            });
-          }
-        };
-        getCorrectUser();
+        getCorrectUser(currentUser.uid);
       } else {
         router.push("/signin");
       }
     });
   };
-  return { getAuthState };
+  return { getAuthState, getCorrectUser };
 };
