@@ -1,52 +1,39 @@
-import { getAuth } from 'firebase/auth';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsFillStarFill } from 'react-icons/bs';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { Hamburger } from '../../components/atoms/Hamburger';
 import { Footer } from '../../components/molecules/Footer';
 import { Header } from '../../components/molecules/Header';
-import { db } from '../../firebase/firebase';
-import { searchMoviesState } from '../../src/recoil/movieState';
 import { userState } from '../../src/recoil/userState';
-import { Movie } from '../../src/types/useMovie';
 import { Review } from '../../src/types/useReview';
 
 const MyPage = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const router = useRouter();
+  const { id } = router.query;
   const user = useRecoilValue(userState);
   const [reviews, setReviews] = useState<Array<Review>>([]);
-  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   useEffect(() => {
     const getReviews = async () => {
-      const q = query(collection(db, 'reviews'), where('userId', '==', user?.userId));
-
-      await getDocs(q)
-        .then((snapshot) => {
-          const arr = snapshot.docs.map((doc) => ({
-            id: doc.id,
-            userId: doc.data().userId,
-            movieTitle: doc.data().movieTitle,
-            imagePath: doc.data().imagePath,
-            evaluation: doc.data().evaluation,
-            review: doc.data().review,
-          }));
-          setReviews(arr);
+      await fetch(`/api/review/get?userId=${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data)
+          setReviews(data);
         })
         .catch((error) => {
           console.log(error);
         });
     };
     getReviews();
-  }, [user]);
+  }, [id]);
 
   return (
     user !== null && (
       <>
-        <Header setSearchMovies={setSearchMovies} />
+        <Header />
         <div className="bg-Black flex flex-col min-h-screen pt-32">
           <div
             className={
@@ -71,7 +58,7 @@ const MyPage = () => {
             </p>
           </div>
           <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
-          <div className={openMenu ? 'hidden' : 'flex-grow container lg:grid grid-cols-10'}>
+          <div className={openMenu ? 'hidden' : 'flex-grow container lg:grid grid-cols-10 pb-40'}>
             {reviews.length > 0 &&
               reviews.map((review) => (
                 <div className="bg-WhiteGray xl:ml-32 lg:ml-20 col-span-5 my-5 h-auto" key={review.id}>
@@ -88,7 +75,7 @@ const MyPage = () => {
                       />
                     </div>
                     <div className="flex h-16 border-b-8 border-Black w-full col-start-4 col-span-3 row-span-1">
-                      {[...Array(review.evaluation)]
+                      {[...Array(Number(review.evaluation))]
                         .map((_, i) => i)
                         .map((num) => (
                           <BsFillStarFill key={num} size="50" className="text-Warning" cursor="pointer" />
@@ -97,7 +84,7 @@ const MyPage = () => {
                     <p className="text-lg lg:text-xl col-start-4 col-span-3 row-start-2 row-span-3">{review.review}</p>
                     <div className="col-start-6 col-span-1 row-start-6 row-span-1 self-end w-full">
                       <button
-                        className="bg-Secondary rounded-full hover:bg-Black xl:text-lg font-bold w-full"
+                        className="bg-Secondary rounded-full hover:bg-Secondary/50 xl:text-lg font-bold w-full"
                         onClick={() =>
                           router.push({
                             pathname: `/reviews/${review.id}/edit`,

@@ -4,20 +4,17 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsFillStarFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { Hamburger } from '../../../components/atoms/Hamburger';
 import { Footer } from '../../../components/molecules/Footer';
 import { Header } from '../../../components/molecules/Header';
 import { db } from '../../../firebase/firebase';
-import { searchMoviesState } from '../../../src/recoil/movieState';
 import { userState } from '../../../src/recoil/userState';
-import { Movie } from '../../../src/types/useMovie';
 import { Review } from '../../../src/types/useReview';
 
 const Edit = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const user = useRecoilValue(userState);
-  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
   const [review, setReview] = useState<Review | null>(null);
   const router = useRouter();
   const id = router.query.id;
@@ -29,11 +26,10 @@ const Edit = () => {
   const myPagePath = `/mypage/${user?.userId}`;
 
   useEffect(() => {
-    const docRef = doc(db, 'reviews', `${id}`);
     const getReview = async () => {
-      await getDoc(docRef)
-        .then((snapshot) => {
-          const data = snapshot.data();
+      fetch(`/api/review/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
           if (data) {
             setReview({
               id: `${id}`,
@@ -78,13 +74,18 @@ const Edit = () => {
   };
 
   const onChangeReview = async () => {
-    await setDoc(doc(db, 'reviews', `${id}`), {
-      userId: review?.userId,
-      movieTitle: review?.movieTitle,
-      imagePath: review?.imagePath,
-      evaluation: evaluation,
+    if (!review) return;
+
+    const params = {
+      userId: user?.userId,
+      movieTitle: review.movieTitle,
+      imagePath: review.imagePath,
+      evaluation: `${evaluation}`,
       review: content,
-    })
+    }
+    const queryParams = new URLSearchParams(params);
+
+    fetch(`/api/review/${id}/edit?${queryParams}`)
       .then(() => {
         toast.success('レビューを変更しました', {
           onClose: () => router.push(myPagePath),
@@ -99,7 +100,7 @@ const Edit = () => {
   };
 
   const onClickDelete = async () => {
-    await deleteDoc(doc(db, 'reviews', `${id}`))
+    fetch(`/api/review/${id}/delete`)
       .then(() => {
         toast.success('レビューを削除しました', {
           onClose: () => router.push(myPagePath),
@@ -115,13 +116,13 @@ const Edit = () => {
 
   return (
     <>
-      <Header setSearchMovies={setSearchMovies} />
+      <Header />
       <div className="h-full flex flex-col min-h-screen bg-Gray pt-32">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
         <div className="flex-grow grid grid-cols-12">
           <div className="col-start-2 col-span-10">
             <p className="text-4xl font-bold text-center text-White border-b-4 border-b-Black">{review?.movieTitle}</p>
-            <div className="lg:grid grid-cols-3 gap-x-2 mt-3">
+            <div className="lg:grid grid-cols-3 gap-x-2 mt-3 pb-10">
               <div className="col-span-1">
                 <div>
                   <img
@@ -185,14 +186,14 @@ const Edit = () => {
                   </div>
                 </div>
                 <div className="row-span-1 flex justify-end items-end">
-                  <button className="h-1/2 bg-Success rounded-full hover:bg-Black px-6 mr-3" onClick={onChangeReview}>
+                  <button className="h-1/2 bg-Success rounded-full hover:bg-Success/50 px-6 mr-3" onClick={onChangeReview}>
                     Change
                   </button>
-                  <button className="h-1/2 bg-Danger rounded-full hover:bg-Black px-6 mr-3" onClick={onClickDelete}>
+                  <button className="h-1/2 bg-Danger rounded-full hover:bg-Danger/50 px-6 mr-3" onClick={onClickDelete}>
                     Delete
                   </button>
                   <button
-                    className="h-1/2 bg-Secondary rounded-full hover:bg-Black px-6"
+                    className="h-1/2 bg-Secondary rounded-full hover:bg-Secondary/50 px-6"
                     onClick={() => router.push(myPagePath)}
                   >
                     Back

@@ -16,8 +16,7 @@ export const movieState = atom<Movie | null>({
   effects_UNSTABLE: [persistAtom],
 })
 
-export const searchMoviesState = atom<Movie[]>({
-  key: "searchMovies",
-  default: [],
+export const searchTextState = atom<string>({
+  key: "searchText",
+  default: "",
 })
-

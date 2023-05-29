@@ -1,54 +1,41 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next';
-import axios from './api/axios';
 import '../firebase/firebase';
 import { IoIosArrowDropleftCircle, IoIosArrowDroprightCircle } from 'react-icons/io';
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from 'react-icons/ai';
 import { BsStars } from 'react-icons/bs';
 import { Header } from '../components/molecules/Header';
 import { Footer } from '../components/molecules/Footer';
-import { useCallback, useEffect, useState } from 'react';
-import { requests } from './api/apiConfig';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Hamburger } from '../components/atoms/Hamburger';
-import { useRecoilState } from 'recoil';
-import { moviesState, searchMoviesState } from '../src/recoil/movieState';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { moviesState, searchTextState } from '../src/recoil/movieState';
 import { Movie } from '../src/types/useMovie';
 
 const Home: NextPage = () => {
   const [movies, setMovies] = useRecoilState<Movie[]>(moviesState);
-  const [searchMovies, setSearchMovies] = useRecoilState<Movie[]>(searchMoviesState);
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
-
-  const getPopMovies = useCallback(() => {
-    axios
-      .get(requests.fetchPopular)
-      .then((result) => {
-        const data = result.data.results;
-        setPopMovies(data);
-        if (searchMovies.length === 0 || movies.length === 0) {
-          setMovies(data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [movies.length, searchMovies.length, setMovies]);
+  const searchText = useRecoilValue(searchTextState);
 
   useEffect(() => {
+    const getPopMovies = async () => {
+      await fetch('/api/movie/popular')
+        .then((res) => res.json())
+        .then((data) => {
+          setPopMovies(data.results);
+          if (searchText === '') {
+            setMovies(data.results);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
     getPopMovies();
-  }, [getPopMovies]);
-
-  useEffect(() => {
-    if (searchMovies.length > 0) {
-      setMovies(searchMovies);
-    } else {
-      getPopMovies();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchMovies]);
+  }, [setMovies, searchText]);
 
   const onClickLeftSlide = () => {
     const movie = document.getElementById('movie-1');
@@ -68,7 +55,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Header setSearchMovies={setSearchMovies} />
+      <Header />
       <div className="bg-Black w-full flex flex-col min-h-screen pt-32">
         <div className="h-full w-full bg-Secondary pb-36 flex-grow">
           <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />

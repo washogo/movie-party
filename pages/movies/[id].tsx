@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from 'react-icons/ai';
@@ -8,7 +7,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { toast } from 'react-toastify';
 import { Footer } from '../../components/molecules/Footer';
 import { Header } from '../../components/molecules/Header';
-import { movieState, searchMoviesState } from '../../src/recoil/movieState';
+import { movieState } from '../../src/recoil/movieState';
 import { Cast, Genre, Movie } from '../../src/types/useMovie';
 import { Hamburger } from '../../components/atoms/Hamburger';
 
@@ -19,47 +18,41 @@ const Movie = () => {
   const [movie, setMovie] = useRecoilState<Movie | null>(movieState);
   const [director, setDirector] = useState('');
   const [casts, setCasts] = useState<Array<Cast>>([]);
-  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   useEffect(() => {
     const getDetail = async () => {
-      await axios
-        .get(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.NEXT_PUBLIC_MOVIE_API_KEY}&language=ja-JP`)
-        .then((result) => {
-          setMovie(result.data);
+      await fetch(`/api/movie/detail?id=${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setMovie(data);
         })
         .catch((error) => {
-          console.log(error.message);
+          console.log(error);
         });
     };
-    getDetail();
-  }, []);
 
-  useEffect(() => {
     const getCredit = async () => {
-      await axios
-        .get(
-          `
-      https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.NEXT_PUBLIC_MOVIE_API_KEY}`
-        )
-        .then((result) => {
-          const crews = result.data.crew;
-          const casts = result.data.cast;
-          const director = crews.find((crew: any) => crew.job === 'Director');
+      await fetch(`/api/movie/credit?id=${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const { crew, cast } = data;
+          const director = crew.find((crew: any) => crew.job === 'Director');
           setDirector(director.name);
-          setCasts(casts);
+          setCasts(cast);
         })
         .catch((err) => {
           toast.error('クレジットが見つかりませんでした');
           console.log(err);
         });
     };
+
+    getDetail();
     getCredit();
-  }, [id]);
+  }, [id, setMovie]);
 
   return (
     <>
-      <Header setSearchMovies={setSearchMovies} />
+      <Header />
       <div className="bg-Tertiary flex flex-col min-h-screen pt-32">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
         {movie && director && casts && (
@@ -134,9 +127,7 @@ const Movie = () => {
                     <p className="font-bold text-lg">出演者</p>
                     <div className="lg:grid grid-cols-4 gap-y-2 gap-x-3">
                       {casts.map((cast, index) => {
-                        if (index > 7) {
-                          return;
-                        }
+                        if (index > 7) return;
                         return (
                           <p className="bg-WhiteGray text-center lg:rounded-lg mb-1" key={cast.id}>
                             {cast.name}
@@ -150,14 +141,14 @@ const Movie = () => {
             </div>
             <div className="col-start-10 col-span-2 mt-2">
               <button
-                className="bg-Primary rounded-full hover:bg-Black px-6 mr-5 h-10"
+                className="bg-Primary rounded-full hover:bg-Primary/50 px-6 mr-5 h-10"
                 onClick={() => {
                   router.push('/reviews/create');
                 }}
               >
                 Review
               </button>
-              <button className="bg-Secondary rounded-full hover:bg-Black px-6 h-10" onClick={() => router.push('/')}>
+              <button className="bg-Secondary rounded-full hover:bg-Secondary/50 px-6 h-10" onClick={() => router.push('/')}>
                 Back
               </button>
             </div>

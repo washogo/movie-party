@@ -9,7 +9,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { db } from '../../firebase/firebase';
 import { Footer } from '../../components/molecules/Footer';
 import { Header } from '../../components/molecules/Header';
-import { movieState, searchMoviesState } from '../../src/recoil/movieState';
+import { movieState } from '../../src/recoil/movieState';
 import { userState } from '../../src/recoil/userState';
 import { Movie } from '../../src/types/useMovie';
 import { Hamburger } from '../../components/atoms/Hamburger';
@@ -25,7 +25,6 @@ const Create = () => {
   const router = useRouter();
   const [isSelected, setIsSelected] = useState(0);
   const [isClicked, setIsClicked] = useState(true);
-  const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   const onClickCreate = async () => {
     if (!movie || !user) return;
@@ -66,10 +65,10 @@ const Create = () => {
   return (
     movie !== null && (
       <>
-        <Header setSearchMovies={setSearchMovies} />
+        <Header />
         <div className="bg-Primary flex flex-col min-h-screen pt-32">
           <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
-          <div className="flex-grow grid grid-cols-12">
+          <div className="flex-grow grid grid-cols-12 pb-40">
             <div className="col-start-2 col-span-10">
               <p className="text-4xl font-bold text-center text-White bg-Gray border-b-4 border-b-Black">
                 {movie.title}
@@ -83,7 +82,7 @@ const Create = () => {
                       alt="movie sample"
                     />
                   </div>
-                  <div className="w-full grid grid-cols-6 content-center bg-Black">
+                  <div className="w-full grid grid-cols-6 content-center bg-Gray">
                     <AiFillEye className="w-full h-8 rounded-lg" />
                     <p className="w-full text-xl font-bold text-center text-White">{movie.vote_count}</p>
                     <BsStars className="w-full h-8 rounded-lg" />
@@ -146,11 +145,11 @@ const Create = () => {
                     </div>
                   </div>
                   <div className="row-span-1 flex justify-end items-end">
-                    <button className="h-1/2 bg-Success rounded-full hover:bg-Black px-6 mr-3" onClick={onClickCreate}>
+                    <button className="h-1/2 bg-Success rounded-full hover:bg-Success/50 px-6 mr-3" onClick={onClickCreate}>
                       Create
                     </button>
                     <button
-                      className="h-1/2 bg-Secondary rounded-full hover:bg-Black px-6"
+                      className="h-1/2 bg-Secondary rounded-full hover:bg-Secondary/50 px-6"
                       onClick={() =>
                         router.push({
                           pathname: `/movies/${movie.id}`,
