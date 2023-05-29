@@ -2,8 +2,8 @@ module.exports = {
   mode: "jit",
   purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
+    "./pages/**/*.{jsx,tsx}",
+    "./components/**/*.{jsx,tsx}",
   ],
   theme: {
     extend: {

@@ -6,15 +6,15 @@ import { useRecoilValue } from "recoil";
 import { toast } from "react-toastify";
 import { userState } from "../../src/recoil/userState";
 import React from "react";
+import { auth } from "../../firebase/firebase";
 
 type Props = {
   openMenu: boolean;
   setOpenMenu: (openMenu: boolean) => void;
-  auth: any;
 };
 
 export const Hamburger = React.memo(function Hamburger(props: Props) {
-  const { openMenu, setOpenMenu, auth } = props;
+  const { openMenu, setOpenMenu } = props;
   const router = useRouter();
   const user = useRecoilValue(userState);
 
@@ -27,8 +27,9 @@ export const Hamburger = React.memo(function Hamburger(props: Props) {
       .then(() => {
         router.push("/signin");
       })
-      .catch((error) => {
+      .catch((err) => {
         toast.warning("ログアウトできません");
+        console.log(err);
       });
   };
 

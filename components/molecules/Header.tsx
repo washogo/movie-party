@@ -15,7 +15,7 @@ type Props = {
 export const Header = React.memo(function Header(props: Props) {
   const { setSearchMovies } = props;
   const router = useRouter();
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useRecoilState(loadingState);
 
   useEffect(() => {

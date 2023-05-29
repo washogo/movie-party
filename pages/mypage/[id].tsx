@@ -1,39 +1,35 @@
-import { getAuth } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { BsFillStarFill } from "react-icons/bs";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { Hamburger } from "../../components/atoms/Hamburger";
-import { Footer } from "../../components/molecules/Footer";
-import { Header } from "../../components/molecules/Header";
-import { Auth } from "../../firebase/auth";
-import { db } from "../../firebase/firebase";
-import { searchMoviesState } from "../../src/recoil/movieState";
-import { userState } from "../../src/recoil/userState";
-import { Movie } from "../../src/types/useMovie";
-import { Review } from "../../src/types/useReview";
+import { getAuth } from 'firebase/auth';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { BsFillStarFill } from 'react-icons/bs';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Hamburger } from '../../components/atoms/Hamburger';
+import { Footer } from '../../components/molecules/Footer';
+import { Header } from '../../components/molecules/Header';
+import { db } from '../../firebase/firebase';
+import { useAuth } from '../../hooks/useAuth';
+import { searchMoviesState } from '../../src/recoil/movieState';
+import { userState } from '../../src/recoil/userState';
+import { Movie } from '../../src/types/useMovie';
+import { Review } from '../../src/types/useReview';
 
 const MyPage = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const auth = getAuth();
   const router = useRouter();
-  const [user, setUser] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
   const [reviews, setReviews] = useState<Array<Review>>([]);
-  const { getAuthState } = Auth({ auth, user, setUser });
+  const { getAuthState } = useAuth();
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
 
   useEffect(() => {
     getAuthState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, []);
 
   useEffect(() => {
     const getReviews = async () => {
-      const q = query(
-        collection(db, "reviews"),
-        where("userId", "==", user?.userId)
-      );
+      const q = query(collection(db, 'reviews'), where('userId', '==', user?.userId));
 
       await getDocs(q)
         .then((snapshot) => {
@@ -62,20 +58,16 @@ const MyPage = () => {
           <div
             className={
               openMenu
-                ? "lg:grid grid-cols-12 grid-rows-1 w-full lg:h-32 bg-WhiteGray opacity-25 pointer-events-none mb-10 px-10"
-                : "lg:grid grid-cols-12 grid-rows-1 w-full bg-WhiteGray mb-10 px-10"
+                ? 'lg:grid grid-cols-12 grid-rows-1 w-full lg:h-32 bg-WhiteGray opacity-25 pointer-events-none mb-10 px-10'
+                : 'lg:grid grid-cols-12 grid-rows-1 w-full bg-WhiteGray mb-10 px-10'
             }
           >
             <div className="col-start-1 col-span-2 px-1">
-              {user.imageUrl === "" ? (
+              {user.imageUrl === '' ? (
                 <div className="rounded-full bg-Primary h-[120px] w-[120px]"></div>
               ) : (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={user.imageUrl}
-                  className="rounded-full bg-Primary h-[120px] w-[120px]"
-                  alt="user image"
-                />
+                <img src={user.imageUrl} className="rounded-full bg-Primary h-[120px] w-[120px]" alt="user image" />
               )}
             </div>
             <p className="text-Black text-3xl font-bold col-start-3 col-span-4 row-start-1 row-span-1 w-full py-10">
@@ -85,28 +77,17 @@ const MyPage = () => {
               ID：{user.userId}
             </p>
           </div>
-          <Hamburger
-            openMenu={openMenu}
-            setOpenMenu={setOpenMenu}
-            auth={auth}
-          />
-          <div
-            className={
-              openMenu ? "hidden" : "flex-grow container lg:grid grid-cols-10"
-            }
-          >
+          <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
+          <div className={openMenu ? 'hidden' : 'flex-grow container lg:grid grid-cols-10'}>
             {reviews.length > 0 &&
               reviews.map((review) => (
-                <div
-                  className="bg-WhiteGray xl:ml-32 lg:ml-20 col-span-5 my-5 h-auto"
-                  key={review.id}
-                >
+                <div className="bg-WhiteGray xl:ml-32 lg:ml-20 col-span-5 my-5 h-auto" key={review.id}>
                   <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
                     {review.movieTitle}
                   </p>
                   <div className="grid grid-rows-6 grid-cols-6">
                     <div className="w-full col-span-3 row-span-full">
-                       {/* eslint-disable-next-line @next/next/no-img-element */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         className="object-contain"
                         src={`https://image.tmdb.org/t/p/w500/${review.imagePath}`}
@@ -117,17 +98,10 @@ const MyPage = () => {
                       {[...Array(review.evaluation)]
                         .map((_, i) => i)
                         .map((num) => (
-                          <BsFillStarFill
-                            key={num}
-                            size="50"
-                            className="text-Warning"
-                            cursor="pointer"
-                          />
+                          <BsFillStarFill key={num} size="50" className="text-Warning" cursor="pointer" />
                         ))}
                     </div>
-                    <p className="text-lg lg:text-xl col-start-4 col-span-3 row-start-2 row-span-3">
-                      {review.review}
-                    </p>
+                    <p className="text-lg lg:text-xl col-start-4 col-span-3 row-start-2 row-span-3">{review.review}</p>
                     <div className="col-start-6 col-span-1 row-start-6 row-span-1 self-end w-full">
                       <button
                         className="bg-Secondary rounded-full hover:bg-Black xl:text-lg font-bold w-full"

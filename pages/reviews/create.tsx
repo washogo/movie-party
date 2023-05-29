@@ -1,20 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
-import { addDoc, collection } from "firebase/firestore";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { AiFillEye, AiOutlineEye, AiOutlineStar } from "react-icons/ai";
-import { BsFillStarFill, BsStars } from "react-icons/bs";
-import { toast } from "react-toastify";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { db } from "../../firebase/firebase";
-import { Footer } from "../../components/molecules/Footer";
-import { Header } from "../../components/molecules/Header";
-import { movieState, searchMoviesState } from "../../src/recoil/movieState";
-import { userState } from "../../src/recoil/userState";
-import { Movie } from "../../src/types/useMovie";
-import { Hamburger } from "../../components/atoms/Hamburger";
-import { getAuth } from "firebase/auth";
-import { Auth } from "../../firebase/auth";
+import { addDoc, collection } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { AiFillEye, AiOutlineEye, AiOutlineStar } from 'react-icons/ai';
+import { BsFillStarFill, BsStars } from 'react-icons/bs';
+import { toast } from 'react-toastify';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { db } from '../../firebase/firebase';
+import { Footer } from '../../components/molecules/Footer';
+import { Header } from '../../components/molecules/Header';
+import { movieState, searchMoviesState } from '../../src/recoil/movieState';
+import { userState } from '../../src/recoil/userState';
+import { Movie } from '../../src/types/useMovie';
+import { Hamburger } from '../../components/atoms/Hamburger';
+import { getAuth } from 'firebase/auth';
+import { Auth } from '../../hooks/useAuth';
 
 const Create = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -22,7 +22,7 @@ const Create = () => {
   const [user, setUser] = useRecoilState(userState);
   const { getAuthState } = Auth({ auth, user, setUser });
   const [evaluation, setEvaluation] = useState(0);
-  const [review, setReview] = useState("");
+  const [review, setReview] = useState('');
   const movie = useRecoilValue(movieState);
   const router = useRouter();
   const [isSelected, setIsSelected] = useState(0);
@@ -36,7 +36,7 @@ const Create = () => {
 
   const onClickCreate = async () => {
     if (!movie || !user) return;
-    await addDoc(collection(db, "reviews"), {
+    await addDoc(collection(db, 'reviews'), {
       userId: user.userId,
       movieTitle: movie.title,
       imagePath: movie.poster_path,
@@ -45,9 +45,9 @@ const Create = () => {
     });
     setIsSelected(0);
     setEvaluation(0);
-    setReview("");
-    toast.success("レビューを保存しました", {
-      onClose: () => router.push("/"),
+    setReview('');
+    toast.success('レビューを保存しました', {
+      onClose: () => router.push('/'),
     });
   };
 
@@ -63,10 +63,7 @@ const Create = () => {
   const onClickStar = (num: number) => {
     if (num === isSelected && isClicked === true) {
       setIsClicked(false);
-    } else if (
-      (num === isSelected && isClicked === false) ||
-      num !== isSelected
-    ) {
+    } else if ((num === isSelected && isClicked === false) || num !== isSelected) {
       setIsClicked(true);
     }
     setIsSelected(num);
@@ -78,11 +75,7 @@ const Create = () => {
       <>
         <Header setSearchMovies={setSearchMovies} />
         <div className="bg-Primary flex flex-col min-h-screen pt-32">
-          <Hamburger
-            openMenu={openMenu}
-            setOpenMenu={setOpenMenu}
-            auth={auth}
-          />
+          <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
           <div className="flex-grow grid grid-cols-12">
             <div className="col-start-2 col-span-10">
               <p className="text-4xl font-bold text-center text-White bg-Gray border-b-4 border-b-Black">
@@ -99,9 +92,7 @@ const Create = () => {
                   </div>
                   <div className="w-full grid grid-cols-6 content-center bg-Black">
                     <AiFillEye className="w-full h-8 rounded-lg" />
-                    <p className="w-full text-xl font-bold text-center text-White">
-                      {movie.vote_count}
-                    </p>
+                    <p className="w-full text-xl font-bold text-center text-White">{movie.vote_count}</p>
                     <BsStars className="w-full h-8 rounded-lg" />
                     <p className="w-full text-xl font-bold text-center text-White">
                       {Math.floor(movie.popularity / 1000)}K
@@ -112,9 +103,7 @@ const Create = () => {
                 </div>
                 <div className="col-span-2 lg:grid grid-rows-10 gap-3">
                   <div className="row-span-1">
-                    <label className="text-lg lg:text-2xl font-bold">
-                      Evaluation
-                    </label>
+                    <label className="text-lg lg:text-2xl font-bold">Evaluation</label>
                     <br />
                     <div className="flex justify-center">
                       {[...Array(5)]
@@ -150,10 +139,7 @@ const Create = () => {
                     </div>
                   </div>
                   <div className="row-span-6">
-                    <label
-                      htmlFor="review"
-                      className="text-lg lg:text-2xl font-bold"
-                    >
+                    <label htmlFor="review" className="text-lg lg:text-2xl font-bold">
                       Review
                     </label>
                     <br />
@@ -167,10 +153,7 @@ const Create = () => {
                     </div>
                   </div>
                   <div className="row-span-1 flex justify-end items-end">
-                    <button
-                      className="h-1/2 bg-Success rounded-full hover:bg-Black px-6 mr-3"
-                      onClick={onClickCreate}
-                    >
+                    <button className="h-1/2 bg-Success rounded-full hover:bg-Black px-6 mr-3" onClick={onClickCreate}>
                       Create
                     </button>
                     <button
