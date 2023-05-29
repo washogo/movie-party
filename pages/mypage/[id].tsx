@@ -8,7 +8,6 @@ import { Hamburger } from '../../components/atoms/Hamburger';
 import { Footer } from '../../components/molecules/Footer';
 import { Header } from '../../components/molecules/Header';
 import { db } from '../../firebase/firebase';
-import { useAuth } from '../../hooks/useAuth';
 import { searchMoviesState } from '../../src/recoil/movieState';
 import { userState } from '../../src/recoil/userState';
 import { Movie } from '../../src/types/useMovie';
@@ -19,13 +18,7 @@ const MyPage = () => {
   const router = useRouter();
   const user = useRecoilValue(userState);
   const [reviews, setReviews] = useState<Array<Review>>([]);
-  const { getAuthState } = useAuth();
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
-
-  useEffect(() => {
-    getAuthState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const getReviews = async () => {

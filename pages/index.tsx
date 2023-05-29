@@ -7,26 +7,22 @@ import { AiFillEye, AiOutlineEye, AiOutlineStar } from 'react-icons/ai';
 import { BsStars } from 'react-icons/bs';
 import { Header } from '../components/molecules/Header';
 import { Footer } from '../components/molecules/Footer';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { requests } from './api/apiConfig';
 import { useRouter } from 'next/router';
 import { Hamburger } from '../components/atoms/Hamburger';
-import { getAuth } from 'firebase/auth';
 import { useRecoilState } from 'recoil';
 import { moviesState, searchMoviesState } from '../src/recoil/movieState';
 import { Movie } from '../src/types/useMovie';
-import { useAuth } from '../hooks/useAuth';
 
 const Home: NextPage = () => {
-  const auth = getAuth();
-  const { getAuthState } = useAuth();
   const [movies, setMovies] = useRecoilState<Movie[]>(moviesState);
   const [searchMovies, setSearchMovies] = useRecoilState<Movie[]>(searchMoviesState);
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
 
-  const getPopMovies = () => {
+  const getPopMovies = useCallback(() => {
     axios
       .get(requests.fetchPopular)
       .then((result) => {
@@ -39,13 +35,11 @@ const Home: NextPage = () => {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }, [movies.length, searchMovies.length, setMovies]);
 
   useEffect(() => {
     getPopMovies();
-    getAuthState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  }, [getPopMovies]);
 
   useEffect(() => {
     if (searchMovies.length > 0) {

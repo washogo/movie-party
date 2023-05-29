@@ -14,13 +14,11 @@ import { userState } from '../../src/recoil/userState';
 import { Movie } from '../../src/types/useMovie';
 import { Hamburger } from '../../components/atoms/Hamburger';
 import { getAuth } from 'firebase/auth';
-import { Auth } from '../../hooks/useAuth';
 
 const Create = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const auth = getAuth();
   const [user, setUser] = useRecoilState(userState);
-  const { getAuthState } = Auth({ auth, user, setUser });
   const [evaluation, setEvaluation] = useState(0);
   const [review, setReview] = useState('');
   const movie = useRecoilValue(movieState);
@@ -28,11 +26,6 @@ const Create = () => {
   const [isSelected, setIsSelected] = useState(0);
   const [isClicked, setIsClicked] = useState(true);
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
-
-  useEffect(() => {
-    getAuthState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const onClickCreate = async () => {
     if (!movie || !user) return;
@@ -75,7 +68,7 @@ const Create = () => {
       <>
         <Header setSearchMovies={setSearchMovies} />
         <div className="bg-Primary flex flex-col min-h-screen pt-32">
-          <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
+          <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
           <div className="flex-grow grid grid-cols-12">
             <div className="col-start-2 col-span-10">
               <p className="text-4xl font-bold text-center text-White bg-Gray border-b-4 border-b-Black">

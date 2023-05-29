@@ -11,22 +11,15 @@ import { Header } from '../../components/molecules/Header';
 import { movieState, searchMoviesState } from '../../src/recoil/movieState';
 import { Cast, Genre, Movie } from '../../src/types/useMovie';
 import { Hamburger } from '../../components/atoms/Hamburger';
-import { useAuth } from '../../hooks/useAuth';
 
 const Movie = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const { getAuthState } = useAuth();
   const router = useRouter();
   const id = router.query.id;
   const [movie, setMovie] = useRecoilState<Movie | null>(movieState);
   const [director, setDirector] = useState('');
   const [casts, setCasts] = useState<Array<Cast>>([]);
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
-
-  useEffect(() => {
-    getAuthState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const getDetail = async () => {
@@ -56,8 +49,9 @@ const Movie = () => {
           setDirector(director.name);
           setCasts(casts);
         })
-        .catch((error) => {
+        .catch((err) => {
           toast.error('クレジットが見つかりませんでした');
+          console.log(err);
         });
     };
     getCredit();

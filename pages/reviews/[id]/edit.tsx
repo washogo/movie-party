@@ -5,11 +5,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsFillStarFill } from 'react-icons/bs';
 import { toast } from 'react-toastify';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Hamburger } from '../../../components/atoms/Hamburger';
 import { Footer } from '../../../components/molecules/Footer';
 import { Header } from '../../../components/molecules/Header';
-import { Auth } from '../../../hooks/useAuth';
 import { db } from '../../../firebase/firebase';
 import { searchMoviesState } from '../../../src/recoil/movieState';
 import { userState } from '../../../src/recoil/userState';
@@ -18,9 +17,7 @@ import { Review } from '../../../src/types/useReview';
 
 const Edit = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const auth = getAuth();
-  const [user, setUser] = useRecoilState(userState);
-  const { getAuthState } = Auth({ auth, user, setUser });
+  const user = useRecoilValue(userState);
   const setSearchMovies = useSetRecoilState<Movie[]>(searchMoviesState);
   const [review, setReview] = useState<Review | null>(null);
   const router = useRouter();
@@ -30,12 +27,7 @@ const Edit = () => {
   const [evaluation, setEvaluation] = useState(0);
   const [content, setContent] = useState('');
   const [isClicked, setIsClicked] = useState(true);
-  const mypagePath = `/mypage/${user?.userId}`;
-
-  useEffect(() => {
-    getAuthState();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth]);
+  const myPagePath = `/mypage/${user?.userId}`;
 
   useEffect(() => {
     const docRef = doc(db, 'reviews', `${id}`);
@@ -58,7 +50,7 @@ const Edit = () => {
         })
         .catch((error) => {
           toast.error('レビューが見つかりませんでした', {
-            onClose: () => router.push(mypagePath),
+            onClose: () => router.push(myPagePath),
           });
           console.log(error);
         });
@@ -96,12 +88,12 @@ const Edit = () => {
     })
       .then(() => {
         toast.success('レビューを変更しました', {
-          onClose: () => router.push(mypagePath),
+          onClose: () => router.push(myPagePath),
         });
       })
       .catch((error) => {
         toast.error('レビューを更新できませんでした', {
-          onClose: () => router.push(mypagePath),
+          onClose: () => router.push(myPagePath),
         });
         console.log(error);
       });
@@ -111,12 +103,12 @@ const Edit = () => {
     await deleteDoc(doc(db, 'reviews', `${id}`))
       .then(() => {
         toast.success('レビューを削除しました', {
-          onClose: () => router.push(mypagePath),
+          onClose: () => router.push(myPagePath),
         });
       })
       .catch((error) => {
         toast.success('レビューを削除できませんでした', {
-          onClose: () => router.push(mypagePath),
+          onClose: () => router.push(myPagePath),
         });
         console.log(error);
       });
@@ -126,7 +118,7 @@ const Edit = () => {
     <>
       <Header setSearchMovies={setSearchMovies} />
       <div className="h-full flex flex-col min-h-screen bg-Gray pt-32">
-        <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} auth={auth} />
+        <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
         <div className="flex-grow grid grid-cols-12">
           <div className="col-start-2 col-span-10">
             <p className="text-4xl font-bold text-center text-White border-b-4 border-b-Black">{review?.movieTitle}</p>
@@ -202,7 +194,7 @@ const Edit = () => {
                   </button>
                   <button
                     className="h-1/2 bg-Secondary rounded-full hover:bg-Black px-6"
-                    onClick={() => router.push(mypagePath)}
+                    onClick={() => router.push(myPagePath)}
                   >
                     Back
                   </button>
