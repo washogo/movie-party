@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsFillStarFill } from 'react-icons/bs';
@@ -8,7 +7,6 @@ import { useRecoilValue } from 'recoil';
 import { Hamburger } from '../../../components/atoms/Hamburger';
 import { Footer } from '../../../components/molecules/Footer';
 import { Header } from '../../../components/molecules/Header';
-import { db } from '../../../firebase/firebase';
 import { userState } from '../../../src/recoil/userState';
 import { Review } from '../../../src/types/useReview';
 
@@ -117,9 +115,9 @@ const Edit = () => {
   return (
     <>
       <Header />
-      <div className="h-full flex flex-col min-h-screen bg-Gray pt-32">
+      <div className="h-full flex flex-col min-h-screen bg-Secondary pt-32">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
-        <div className="flex-grow grid grid-cols-12">
+        <div className="flex-grow grid grid-cols-12 pb-40">
           <div className="col-start-2 col-span-10">
             <p className="text-4xl font-bold text-center text-White border-b-4 border-b-Black">{review?.movieTitle}</p>
             <div className="lg:grid grid-cols-3 gap-x-2 mt-3 pb-10">
@@ -193,7 +191,7 @@ const Edit = () => {
                     Delete
                   </button>
                   <button
-                    className="h-1/2 bg-Secondary rounded-full hover:bg-Secondary/50 px-6"
+                    className="h-1/2 bg-Gray rounded-full hover:bg-Gray/50 px-6"
                     onClick={() => router.push(myPagePath)}
                   >
                     Back

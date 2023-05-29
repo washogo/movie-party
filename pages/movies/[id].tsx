@@ -53,7 +53,7 @@ const Movie = () => {
   return (
     <>
       <Header />
-      <div className="bg-Tertiary flex flex-col min-h-screen pt-32">
+      <div className="bg-Secondary flex flex-col min-h-screen pt-32">
         <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
         {movie && director && casts && (
           <div className="flex-grow grid grid-cols-12 grid-rows-6">
@@ -148,7 +148,7 @@ const Movie = () => {
               >
                 Review
               </button>
-              <button className="bg-Secondary rounded-full hover:bg-Secondary/50 px-6 h-10" onClick={() => router.push('/')}>
+              <button className="bg-Gray rounded-full hover:bg-Gray/50 px-6 h-10" onClick={() => router.push('/')}>
                 Back
               </button>
             </div>

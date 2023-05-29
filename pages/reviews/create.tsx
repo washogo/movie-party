@@ -1,24 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import { addDoc, collection } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { AiFillEye, AiOutlineEye, AiOutlineStar } from 'react-icons/ai';
 import { BsFillStarFill, BsStars } from 'react-icons/bs';
 import { toast } from 'react-toastify';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { db } from '../../firebase/firebase';
 import { Footer } from '../../components/molecules/Footer';
 import { Header } from '../../components/molecules/Header';
 import { movieState } from '../../src/recoil/movieState';
 import { userState } from '../../src/recoil/userState';
-import { Movie } from '../../src/types/useMovie';
 import { Hamburger } from '../../components/atoms/Hamburger';
-import { getAuth } from 'firebase/auth';
 
 const Create = () => {
   const [openMenu, setOpenMenu] = useState(false);
-  const auth = getAuth();
-  const [user, setUser] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
   const [evaluation, setEvaluation] = useState(0);
   const [review, setReview] = useState('');
   const movie = useRecoilValue(movieState);
@@ -66,7 +63,7 @@ const Create = () => {
     movie !== null && (
       <>
         <Header />
-        <div className="bg-Primary flex flex-col min-h-screen pt-32">
+        <div className="bg-Secondary flex flex-col min-h-screen pt-32">
           <Hamburger openMenu={openMenu} setOpenMenu={setOpenMenu} />
           <div className="flex-grow grid grid-cols-12 pb-40">
             <div className="col-start-2 col-span-10">
@@ -149,7 +146,7 @@ const Create = () => {
                       Create
                     </button>
                     <button
-                      className="h-1/2 bg-Secondary rounded-full hover:bg-Secondary/50 px-6"
+                      className="h-1/2 bg-Gray rounded-full hover:bg-Gray/50 px-6"
                       onClick={() =>
                         router.push({
                           pathname: `/movies/${movie.id}`,

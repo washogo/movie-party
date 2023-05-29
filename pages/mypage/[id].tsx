@@ -34,7 +34,7 @@ const MyPage = () => {
     user !== null && (
       <>
         <Header />
-        <div className="bg-Black flex flex-col min-h-screen pt-32">
+        <div className="bg-Tertiary flex flex-col min-h-screen pt-32">
           <div
             className={
               openMenu
