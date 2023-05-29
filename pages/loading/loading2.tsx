@@ -5,6 +5,7 @@ import animationData from "../../src/json/65556-movies-title-animation.json";
 
 const Loading2 = () => {
   const router = useRouter();
+
   useEffect(() => {
     setTimeout(function(){
       router.push("/")

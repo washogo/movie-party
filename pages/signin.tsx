@@ -1,29 +1,27 @@
-import "../firebase/firebase";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithRedirect,
-} from "firebase/auth";
-import { useRouter } from "next/router";
-import { MouseEventHandler, useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { toast } from "react-toastify";
+import '../firebase/firebase';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
+import { useRouter } from 'next/router';
+import { MouseEventHandler, useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
+import { toast } from 'react-toastify';
+import { auth } from '../firebase/firebase';
+import { useUser } from '../hooks/useUser';
 
-const Signin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
-  const auth = getAuth();
   const GoogleProvider = new GoogleAuthProvider();
+  const { setCorrectUser } = useUser();
 
   const onClickSignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        router.push("/loading/loading2");
+      .then((userCredential) => {
+        setCorrectUser(userCredential.user.uid);
+        router.push('/loading/loading2');
       })
       .catch((error) => {
-        toast.error("ログインできません");
+        toast.error('ログインできません');
         console.log(error);
       });
   };
@@ -31,15 +29,13 @@ const Signin = () => {
   const onClickGoogleSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     signInWithRedirect(auth, GoogleProvider);
-    router.push("/loading/loading3");
+    router.push('/loading/loading3');
   };
 
   return (
     <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black pb-40">
       <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 pb-8 my-20 bg-Primary">
-        <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">
-          Sign in
-        </p>
+        <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">Sign in</p>
         <div className="w-full pl-6">
           <p className="text-xl font-bold text-Black">Email</p>
           <input
@@ -78,7 +74,7 @@ const Signin = () => {
         <div className="h-15">
           <button
             className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
-            onClick={() => router.push("/signup")}
+            onClick={() => router.push('/signup')}
           >
             Create new account?
           </button>
@@ -88,4 +84,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignIn;

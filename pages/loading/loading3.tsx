@@ -1,17 +1,13 @@
 import "../../firebase/firebase";
-import { getAuth, getRedirectResult } from "firebase/auth";
+import { getRedirectResult } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Lottie from "react-lottie";
 import animationData from "../../src/json/1961-movie-loading.json";
-import { useRecoilState } from "recoil";
-import { userState } from "../../src/recoil/userState";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
+import { auth, db } from "../../firebase/firebase";
 
 const Loading3 = () => {
-  const auth = getAuth();
-  const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
 
   useEffect(() => {

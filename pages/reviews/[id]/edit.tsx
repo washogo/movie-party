@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-import { getAuth } from 'firebase/auth';
 import { deleteDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

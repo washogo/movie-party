@@ -1,5 +1,5 @@
 import axios from "../../pages/api/axios";
-import React, { MouseEvent, useEffect, useState, VFC } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
