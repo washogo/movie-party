@@ -26,7 +26,7 @@ const Signup = () => {
           const { uid } = userCredential.user;
           router.push({
             pathname: "/registration",
-            query: { uid: uid, nickname: name },
+            query: { uid: uid, nickname: name, email: email },
           });
         })
         .catch((error) => {

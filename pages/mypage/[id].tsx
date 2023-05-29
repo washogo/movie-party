@@ -98,7 +98,7 @@ const MyPage = () => {
             {reviews.length > 0 &&
               reviews.map((review) => (
                 <div
-                  className="bg-WhiteGray xl:ml-32 lg:ml-20 col-span-5 my-5"
+                  className="bg-WhiteGray xl:ml-32 lg:ml-20 col-span-5 my-5 h-auto"
                   key={review.id}
                 >
                   <p className="xl:text-xl font-bold text-center text-Black p-2 w-full border-b-8 border-Black">
@@ -128,7 +128,7 @@ const MyPage = () => {
                     <p className="text-lg lg:text-xl col-start-4 col-span-3 row-start-2 row-span-3">
                       {review.review}
                     </p>
-                    <div className="col-start-6 col-span-1 row-start-6 row-span-1 mt-5 w-full">
+                    <div className="col-start-6 col-span-1 row-start-6 row-span-1 self-end w-full">
                       <button
                         className="bg-Secondary rounded-full hover:bg-Black xl:text-lg font-bold w-full"
                         onClick={() =>
