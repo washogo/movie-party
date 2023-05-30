@@ -15,8 +15,3 @@ export const movieState = atom<Movie | null>({
   default: null,
   effects_UNSTABLE: [persistAtom],
 })
-
-export const searchTextState = atom<string>({
-  key: "searchText",
-  default: "",
-})

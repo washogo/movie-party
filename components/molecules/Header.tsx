@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { Movie } from '../../src/types/useMovie';
 import { toast } from 'react-toastify';
-import { moviesState, searchTextState } from '../../src/recoil/movieState';
+import { moviesState } from '../../src/recoil/movieState';
 import { useAuth } from '../../hooks/useAuth';
 
 export const Header = React.memo(function Header() {
   const router = useRouter();
-  const [search, setSearch] = useRecoilState(searchTextState);
+  const [search, setSearch] = useState('');
   const setMovies = useSetRecoilState<Movie[]>(moviesState);
   useAuth();
 
+  /** 映画を検索する処理 */
   const onClickGetSearchMovies = async (text: string) => {
     if (text === '') return;
 
@@ -31,6 +32,18 @@ export const Header = React.memo(function Header() {
       .catch((error) => {
         console.error(error);
         toast.error('映画が見つかりませんでした');
+      });
+  };
+
+  /** 人気の映画情報を設定する処理 */
+  const setPopMovieList = async () => {
+    await fetch('/api/movie/popular')
+      .then((res) => res.json())
+      .then((data) => {
+        setMovies(data.results);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -66,6 +79,7 @@ export const Header = React.memo(function Header() {
           <button
             className="col-span-2 text-[10px] sm:text-sm lg:text-lg xl:text-xl font-bold hover:scale-110 duration-200"
             onClick={() => {
+              setPopMovieList();
               setSearch('');
             }}
           >

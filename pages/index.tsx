@@ -9,8 +9,8 @@ import { Footer } from '../components/molecules/Footer';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Hamburger } from '../components/atoms/Hamburger';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { moviesState, searchTextState } from '../src/recoil/movieState';
+import { useRecoilState } from 'recoil';
+import { moviesState } from '../src/recoil/movieState';
 import { Movie } from '../src/types/useMovie';
 
 const Home: NextPage = () => {
@@ -18,24 +18,21 @@ const Home: NextPage = () => {
   const [popMovies, setPopMovies] = useState<Movie[]>([]);
   const router = useRouter();
   const [openMenu, setOpenMenu] = useState(false);
-  const searchText = useRecoilValue(searchTextState);
 
   useEffect(() => {
-    const getPopMovies = async () => {
+    const setPopMovieList = async () => {
       await fetch('/api/movie/popular')
         .then((res) => res.json())
         .then((data) => {
           setPopMovies(data.results);
-          if (searchText === '') {
-            setMovies(data.results);
-          }
+          setMovies(data.results);
         })
         .catch((error) => {
           console.log(error);
         });
     };
-    getPopMovies();
-  }, [setMovies, searchText]);
+    setPopMovieList();
+  }, [setMovies]);
 
   const onClickLeftSlide = () => {
     const movie = document.getElementById('movie-1');
