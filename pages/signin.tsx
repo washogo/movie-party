@@ -1,5 +1,5 @@
 import '../firebase/firebase';
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useRouter } from 'next/router';
 import { MouseEventHandler, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
@@ -18,7 +18,6 @@ const SignIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setCorrectUser(userCredential.user.uid);
-        router.push('/loading/loading2');
       })
       .catch((error) => {
         toast.error('ログインできません');
@@ -27,9 +26,16 @@ const SignIn = () => {
   };
 
   const onClickGoogleSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    signInWithRedirect(auth, GoogleProvider);
-    router.push('/loading/loading3');
+    signInWithPopup(auth, GoogleProvider)
+      .then((result) => {
+        const userId = result.user.uid;
+        setCorrectUser(userId);
+        router.push('/');
+      })
+      .catch((error) => {
+        toast.error('ログインできません');
+        console.log(error);
+      });
   };
 
   return (

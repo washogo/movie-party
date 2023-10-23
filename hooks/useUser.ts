@@ -6,14 +6,15 @@ export const useUser = () => {
   const [user, setUser] = useRecoilState(userState);
 
   const setCorrectUser = async (uid: string) => {
-    const data = await (await fetch(`/api/user/correct?uid=${uid}`)).json();
+    const data = await fetch(`/api/user/correct?uid=${uid}`);
+    const json = await data.json();
 
     setUser({
-      userId: data.userId,
-      imageUrl: data.imageUrl,
-      nickname: data.nickname,
+      userId: json.userId,
+      imageUrl: json.imageUrl,
+      nickname: json.nickname,
     });
   };
 
-  return { user, setCorrectUser }
+  return { user, setCorrectUser };
 };

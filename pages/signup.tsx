@@ -1,9 +1,10 @@
 import '../firebase/firebase';
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { MouseEventHandler, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { useUser } from '../hooks/useUser';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -12,6 +13,7 @@ const Signup = () => {
   const auth = getAuth();
   const router = useRouter();
   const GoogleProvider = new GoogleAuthProvider();
+  const { setCorrectUser } = useUser();
 
   const onClickSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
@@ -49,9 +51,16 @@ const Signup = () => {
   };
 
   const onClickGoogleSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
-    signInWithRedirect(auth, GoogleProvider);
-    router.push('/loading/loading3');
+    signInWithPopup(auth, GoogleProvider)
+      .then((result) => {
+        const userId = result.user.uid;
+        setCorrectUser(userId);
+        router.push('/');
+      })
+      .catch((error) => {
+        toast.error('ログインできません');
+        console.log(error);
+      });
   };
 
   return (
