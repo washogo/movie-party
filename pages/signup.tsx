@@ -1,104 +1,94 @@
-import "../firebase/firebase";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithRedirect,
-} from "firebase/auth";
-import { FcGoogle } from "react-icons/fc";
-import { MouseEventHandler, useState } from "react";
-import { useRouter } from "next/router";
-import { toast } from "react-toastify";
+import '../firebase/firebase';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { FcGoogle } from 'react-icons/fc';
+import { MouseEventHandler, useState } from 'react';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const auth = getAuth();
   const router = useRouter();
   const GoogleProvider = new GoogleAuthProvider();
 
   const onClickSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    if (password.length >= 8 && name !== "") {
+    if (password.length >= 8 && name !== '') {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const { uid } = userCredential.user;
           router.push({
-            pathname: "/registration",
+            pathname: '/registration',
             query: { uid: uid, nickname: name, email: email },
           });
         })
         .catch((error) => {
           switch (error.code) {
-            case "auth/missing-email":
-              toast.warning("メールアドレスが間違っています");
+            case 'auth/missing-email':
+              toast.warning('メールアドレスが間違っています');
               break;
-            case "auth/invalid-email":
-              toast.warning("メールアドレスが間違っています");
+            case 'auth/invalid-email':
+              toast.warning('メールアドレスが間違っています');
               break;
-            case "auth/email-already-in-use":
-              toast.warning("メールアドレスは登録済みです");
+            case 'auth/email-already-in-use':
+              toast.warning('メールアドレスは登録済みです');
               break;
             default:
-              toast.error("アカウントを作成できません");
+              toast.error('アカウントを作成できません');
               break;
           }
           console.log(error);
         });
     } else if (password.length < 8) {
-      toast.warning("パスワードは８文字以上です");
-    } else if (name === "") {
-      toast.warning("ニックネームを入力してください");
+      toast.warning('パスワードは８文字以上です');
+    } else if (name === '') {
+      toast.warning('ニックネームを入力してください');
     }
   };
 
   const onClickGoogleSignUp: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     signInWithRedirect(auth, GoogleProvider);
-    router.push("/loading/loading3");
+    router.push('/loading/loading3');
   };
 
   return (
-    <div className="flex flex-col items-center justify-end h-screen w-full bg-Black shadow border border-Black pb-40">
-      <div className="w-full sm:w-1/2 lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 my-20 pb-8 bg-Gray">
-        <p className="w-full h-full lg:text-5xl text-5xl font-bold text-center text-Black p-5">
-          Sign up
-        </p>
-        <div className="w-3/4 xl:px-5">
-          <p className="text-xl font-bold text-Black">NickName</p>
+    <div className="h-full bg-Black shadow border border-Black">
+      <div className="xs:w-full md:w-4/5 mx-auto flex flex-col space-y-6 items-center bg-Primary h-screen">
+        <p className="text-5xl font-bold text-center text-Black pt-10">Sign up</p>
+        <div className="w-4/5 flex flex-col">
+          <label className="text-xl font-bold text-Black">NickName</label>
           <input
             type="text"
-            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
+            className="w-full h-10 text-lg mt-3 mx-auto rounded-lg"
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="w-3/4 xl:px-5">
-          <p className="text-xl font-bold text-Black">Email</p>
+        <div className="w-4/5 flex flex-col">
+          <label className="text-xl font-bold text-Black">Email</label>
           <input
             type="email"
-            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
+            className="w-full h-10 text-lg mt-3 mx-auto rounded-lg"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="w-3/4 xl:px-5">
-          <p className="text-xl font-bold text-Black">
-            Password{" "}
-            <span className="text-sm font-bold text-Black">
-              (at least 8 characters)
-            </span>
-          </p>
+        <div className="w-4/5 flex flex-col">
+          <label className="text-xl font-bold text-Black">
+            Password <span className="text-sm font-bold text-Black">(at least 8 characters)</span>
+          </label>
           <input
             type="password"
-            className="w-full h-10 text-lg p-2 mt-3 rounded-lg"
+            className="w-full h-10 text-lg mt-3 mx-auto rounded-lg"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
         <div className="xl:w-2/5 h-15">
           <button
-            className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Primary rounded-full py-2 px-5"
+            className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Gray rounded-full py-2 px-5"
             onClick={onClickSignUp}
           >
             Sign Up
@@ -116,7 +106,7 @@ const Signup = () => {
         <div className="h-15">
           <button
             className="h-full w-full text-sm lg:text-lg font-bold text-center text-Black bg-Tertiary rounded-full p-2"
-            onClick={() => router.push("/signin")}
+            onClick={() => router.push('/signin')}
           >
             Already have your account?
           </button>

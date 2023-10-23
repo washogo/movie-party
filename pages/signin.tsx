@@ -33,23 +33,23 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-end h-screen bg-Black shadow border border-Black pb-40">
-      <div className="lg:w-2/5 flex flex-col space-y-6 items-center justify-start px-14 pb-8 my-20 bg-Primary">
-        <p className="flex-1 h-full text-5xl font-bold text-center text-Black p-5">Sign in</p>
-        <div className="w-full pl-6">
-          <p className="text-xl font-bold text-Black">Email</p>
+    <div className="h-full bg-Black shadow border border-Black">
+      <div className="xs:w-full md:w-4/5 mx-auto flex flex-col space-y-6 items-center bg-Primary h-screen">
+        <p className="text-5xl font-bold text-center text-Black pt-10">Sign in</p>
+        <div className="w-4/5 flex flex-col">
+          <label className="text-xl font-bold text-Black">Email</label>
           <input
             type="email"
-            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            className="w-full h-10 text-lg mt-3 mx-auto rounded-lg"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="w-full pl-6">
-          <p className="text-xl font-bold text-Black">Password</p>
+        <div className="w-4/5 flex flex-col">
+          <label className="text-xl font-bold text-Black">Password</label>
           <input
             type="password"
-            className="lg:w-3/4 h-10 text-lg p-2 mt-3 lg:ml-10 rounded-lg"
+            className="w-full h-10 text-lg mt-3 mx-auto rounded-lg"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
